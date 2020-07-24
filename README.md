@@ -3,14 +3,28 @@
 
 ## Installation
 
-First, install [Yeoman](http://yeoman.io) and generator-versa-chatbot-generator using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).
+* Install [Yeoman](http://yeoman.io) .
 
 ```bash
 npm install -g yo
-npm install -g generator-versa-chatbot-generator
+
 ```
 
-Then generate your new project:
+* Clone this repository
+* navigate to the repository 
+```bash
+cd versa-chat-bot-generator
+
+```
+* run the following commands (**don't use yarn**)
+
+```bash
+npm install
+npm link
+
+```
+
+Then, outside of the repository, create a new folder with the name of your chatbot navigate into it and generate your new project:
 
 ```bash
 yo versa-chatbot-generator

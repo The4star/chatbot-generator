@@ -1,0 +1,33 @@
+@import "../../../style-variables.scss";
+.quick-reply {
+
+    button, .react-link {
+        font-size: 14px;
+        font-weight: bold;
+        padding: 10px;
+        margin: 5px;
+        background: $chatbot-quickreply-container-color !important;
+        color: $chatbot-quickreply-font-color;
+        border: 2px solid $chatbot-quickreply-border-color;
+        box-sizing: border-box;
+        border-radius: 37px;
+        text-decoration: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+
+        .MuiSvgIcon-root {
+            margin-right: 5px;
+        }
+
+        path {
+            fill: $primary-color-a;
+        }
+
+        &:hover {
+            color: $chatbot-quickreply-container-color;
+            background: $chatbot-quickreply-font-color !important;
+        }
+    }
+}

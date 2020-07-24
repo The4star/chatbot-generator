@@ -62,78 +62,49 @@ module.exports = class extends Generator {
     const chatbotNameNoSpaces = chatbotName.replace(/ /g, "-");
     
     if (twilioFlex === true && deployment === "Google Cloud Platform")  {
-      return true
+
+      this.fs.copyTpl(
+        this.templatePath(`frontend`),
+        this.destinationPath(`frontend`),
+        {
+          chatbotName: chatbotNameNoSpaces,
+          chatbotDescription,
+          authorName,
+          companyName
+        }
+      );
+
+      this.fs.copyTpl(
+        this.templatePath("backend"),
+        this.destinationPath(`backend`),
+        {
+          chatbotName: chatbotNameNoSpaces,
+          chatbotDescription,
+          authorName,
+          companyName
+        }
+      );
+
+      this.fs.copyTpl(
+        this.templatePath("set-up-your-chatbot-step-by-step-guide.md"),
+        this.destinationPath(
+          `set-up-${chatbotNameNoSpaces}-step-by-step-guide.md`
+        ),
+        {
+          chatbotName: chatbotNameNoSpaces,
+          chatbotDescription,
+          authorName,
+          companyName
+        }
+      );
+      
+      this.fs.copy(
+        this.templatePath(`set-up-imgs`),
+        this.destinationPath(`set-up-imgs`)
+      );
     } 
-    
-    // this.fs.copyTpl(
-    //   this.templatePath(`frontend`),
-    //   this.destinationPath(`${chatbotNameNoSpaces}-frontend`),
-    //   {
-    //     chatbotName: chatbotNameNoSpaces,
-    //     chatbotDescription,
-    //     authorName,
-    //     companyName
-    //   }
-    // );
 
-    // this.fs.copyTpl(
-    //   this.templatePath("vchat-serverless-backend"),
-    //   this.destinationPath(`${chatbotNameNoSpaces}-serverless-backend`),
-    //   {
-    //     chatbotName: chatbotNameNoSpaces,
-    //     chatbotDescription,
-    //     authorName,
-    //     companyName
-    //   }
-    // );
-
-    // this.fs.copyTpl(
-    //   this.templatePath("vchat-voxa"),
-    //   this.destinationPath(`${chatbotNameNoSpaces}-voxa`),
-    //   {
-    //     chatbotName: chatbotNameNoSpaces,
-    //     chatbotDescription,
-    //     authorName,
-    //     companyName
-    //   }
-    // );
-
-    // this.fs.copyTpl(
-    //   this.templatePath("set-up-your-chatbot-step-by-step-guide.md"),
-    //   this.destinationPath(
-    //     `set-up-${chatbotNameNoSpaces}-step-by-step-guide.md`
-    //   ),
-    //   {
-    //     chatbotName: chatbotNameNoSpaces,
-    //     chatbotDescription,
-    //     authorName,
-    //     companyName
-    //   }
-    // );
-
-    // this.fs.copyTpl(
-    //   this.templatePath("vchat - Utterances-en-AU.xlsx"),
-    //   this.destinationPath(`${chatbotNameNoSpaces} - Utterances-en-AU.xlsx`),
-    //   {
-    //     chatbotName: chatbotNameNoSpaces,
-    //     chatbotDescription,
-    //     authorName,
-    //     companyName
-    //   }
-    // );
-
-    // this.fs.copy(
-    //   this.templatePath(`set-up-imgs`),
-    //   this.destinationPath(`set-up-imgs`)
-    // );
   }
-
-  // Installs dependencies to the frontend folder
-  // install() {
-  //   const npmdir = process.cwd() + '/frontend';
-  //   process.chdir(npmdir);
-  //   this.installDependencies({ bower: false, npm: true})
-  // }
 
   end() {
     const { chatbotName } = this.answers;

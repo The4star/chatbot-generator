@@ -1,0 +1,40 @@
+{
+  "name": "<%=chatbotName%>-backend",
+  "version": "1.0.0",
+  "description": "<%=chatbotDescription%>",
+  "main": "app.js",
+  "scripts": {
+    "dev": "nodemon app.js",
+    "start": "node app.js",
+    "test": "jest --watchAll"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^3.0.6",
+    "cors": "^2.8.5",
+    "dialogflow": "^0.14.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "morgan": "^1.9.1",
+    "serverless-http": "^2.5.0",
+    "structjson": "^1.0.1",
+    "twilio": "^3.43.0",
+    "uuid": "^8.1.0"
+  },
+  "devDependencies": {
+    "jest": "^24.9.0",
+    "nodemon": "^2.0.4",
+    "supertest": "^4.0.2"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+@import "../../../style-variables.scss";
+.menu-item {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 5px;
+  border-radius: 5px;
+  transition: .3s;
+
+  path {
+    fill: $text-color-d;
+  }
+  
+  &:hover {
+    background-color: rgba(27, 45, 56, 0.1);
+    transition: .3s;
+  }
+
+  .menu-icon {
+    cursor: pointer;
+    width: 25px;
+    height: auto;
+    margin-right: 10px;
+  }
+}
