@@ -1,4 +1,4 @@
-# Versa Chat bot - Custom UI
+# <%= chatbotName %> - Custom UI
 ## React Front end and Express back end connection to Dialogflow.
 
 To start the backend.

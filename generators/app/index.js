@@ -2,7 +2,6 @@
 "use strict";
 const Generator = require("yeoman-generator");
 const chalk = require("chalk");
-const yosay = require("yosay");
 
 module.exports = class extends Generator {
   async prompting() {
@@ -60,51 +59,144 @@ module.exports = class extends Generator {
     } = this.answers;
 
     const chatbotNameNoSpaces = chatbotName.replace(/ /g, "-");
+
+    this.fs.copyTpl(
+      this.templatePath(`frontend`),
+      this.destinationPath(`frontend`),
+      {
+        chatbotName: chatbotNameNoSpaces,
+        chatbotDescription,
+        authorName,
+        companyName
+      }
+    );
+
+    this.fs.copyTpl(
+      this.templatePath("backend"),
+      this.destinationPath(`backend`),
+      {
+        chatbotName: chatbotNameNoSpaces,
+        chatbotDescription,
+        authorName,
+        companyName
+      }
+    );
+
+    this.fs.copyTpl(
+      this.templatePath("set-up-your-chatbot-step-by-step-guide.md"),
+      this.destinationPath(
+        `set-up-${chatbotNameNoSpaces}-step-by-step-guide.md`
+      ),
+      {
+        chatbotName: chatbotNameNoSpaces,
+        chatbotDescription,
+        authorName,
+        companyName
+      }
+    );
     
-    if (twilioFlex === true && deployment === "Google Cloud Platform")  {
+    this.fs.copy(
+      this.templatePath(`set-up-imgs`),
+      this.destinationPath(`set-up-imgs`)
+    );
 
-      this.fs.copyTpl(
-        this.templatePath(`frontend`),
-        this.destinationPath(`frontend`),
-        {
-          chatbotName: chatbotNameNoSpaces,
-          chatbotDescription,
-          authorName,
-          companyName
-        }
-      );
+    this.fs.copy(
+      this.templatePath(`pipelines/this.copy.gitignore`),
+      this.destinationPath(`.gitignore`)
+    );
 
-      this.fs.copyTpl(
-        this.templatePath("backend"),
-        this.destinationPath(`backend`),
-        {
-          chatbotName: chatbotNameNoSpaces,
-          chatbotDescription,
-          authorName,
-          companyName
-        }
-      );
+    
+    if (deployment === "Google Cloud Platform")  {
 
-      this.fs.copyTpl(
-        this.templatePath("set-up-your-chatbot-step-by-step-guide.md"),
-        this.destinationPath(
-          `set-up-${chatbotNameNoSpaces}-step-by-step-guide.md`
-        ),
-        {
-          chatbotName: chatbotNameNoSpaces,
-          chatbotDescription,
-          authorName,
-          companyName
-        }
-      );
-      
-      this.fs.copy(
-        this.templatePath(`set-up-imgs`),
-        this.destinationPath(`set-up-imgs`)
-      );
-    } 
+      if (twilioFlex === true) {
 
+        this.fs.copyTpl(
+          this.templatePath("readme-files/README-google-twilio.md"),
+          this.destinationPath(`README.md`),
+          {
+            chatbotName: chatbotNameNoSpaces,
+            chatbotDescription,
+            authorName,
+            companyName
+          }
+        );
+    
+        this.fs.copyTpl(
+          this.templatePath("pipelines/google-app-engine-twilio/bitbucket-pipelines.yml"),
+          this.destinationPath(`bitbucket-pipelines.yml`),
+          {
+            chatbotName: chatbotNameNoSpaces,
+            chatbotDescription,
+            authorName,
+            companyName
+          }
+        );
+    
+        this.fs.copyTpl(
+          this.templatePath("pipelines/google-app-engine-twilio/app.yaml"),
+          this.destinationPath(`backend/app.yaml`),
+          {
+            chatbotName: chatbotNameNoSpaces,
+            chatbotDescription,
+            authorName,
+            companyName
+          }
+        );
+  
+        this.fs.copy(
+          this.templatePath(`pipelines/this.copy.twilio.env`),
+          this.destinationPath(`backend/.env`)
+        );
+
+      } else {
+
+        this.fs.copyTpl(
+          this.templatePath("readme-files/README-google.md"),
+          this.destinationPath(`README.md`),
+          {
+            chatbotName: chatbotNameNoSpaces,
+            chatbotDescription,
+            authorName,
+            companyName
+          }
+        );
+    
+        this.fs.copyTpl(
+          this.templatePath("pipelines/google-app-engine/bitbucket-pipelines.yml"),
+          this.destinationPath(`bitbucket-pipelines.yml`),
+          {
+            chatbotName: chatbotNameNoSpaces,
+            chatbotDescription,
+            authorName,
+            companyName
+          }
+        );
+    
+        this.fs.copyTpl(
+          this.templatePath("pipelines/google-app-engine/app.yaml"),
+          this.destinationPath(`backend/app.yaml`),
+          {
+            chatbotName: chatbotNameNoSpaces,
+            chatbotDescription,
+            authorName,
+            companyName
+          }
+        );
+  
+        this.fs.copy(
+          this.templatePath(`pipelines/this.copy.env`),
+          this.destinationPath(`backend/.env`)
+        );
+      }
+    } else if (deployment === "AWS") {
+      // if (twilioFlex === true) {
+      //   return
+      // } else {
+      //   return
+      // }
+    }
   }
+
 
   end() {
     const { chatbotName } = this.answers;

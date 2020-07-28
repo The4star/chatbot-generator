@@ -1,4 +1,4 @@
-# Versa Chat bot - Custom UI
+# <%= chatbotName %> - Custom UI
 ## React Front end and Express back end connection to Twilio Flex and Dialogflow for Versa Chatbot UI Generator.
 
 To start the backend.

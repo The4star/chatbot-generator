@@ -1,0 +1,49 @@
+pipelines:
+  branches:
+    master:
+      - step:
+          name: Deploy Custom Chatbot UI to gcloud [staging] 
+          image: spatical/voxa-build:latest
+          script:
+            - yarn config set cache-folder .yarn
+            - cd ./dpc-frontend
+            - yarn --frozen-lockfile
+            - rm src/helpers/variables.js
+            - cp src/helpers/staging.variables.js src/helpers/variables.js
+            - yarn build
+            - cp -r build ../dpc-backend/build
+            - cd ../dpc-backend
+            - yarn --frozen-lockfile
+            - sed -i 's/{NODE_ENV}/staging/g' app.yaml
+            - sed -i -e 's%{GOOGLE_CLIENT_EMAIL}%'"${DEV_GOOGLE_CLIENT_EMAIL}"'%g' app.yaml
+            - sed -i -e 's%{GOOGLE_PROJECT_ID}%'"${DEV_GOOGLE_PROJECT_ID}"'%g' app.yaml
+            - sed -i -e 's%{DIALOGFLOW_SESSION_ID}%'"${DEV_DIALOGFLOW_SESSION_ID}"'%g' app.yaml
+            - sed -i 's/{DIALOGFLOW_SESSION_LANGUAGE_CODE}/en/g' app.yaml
+            - echo ${DEV_GCLOUD_DEPLOYMENT_KEY} > gcloud_key.json
+            - gcloud auth activate-service-account --key-file=gcloud_key.json
+            - gcloud config list
+            - gcloud beta app deploy --project ${DEV_GOOGLE_PROJECT_ID}
+
+    production:
+      - step:
+          name: Deploy Custom Chatbot UI to gcloud [production] 
+          image: spatical/voxa-build:latest
+          script:
+            - yarn config set cache-folder .yarn
+            - cd ./dpc-frontend
+            - yarn --frozen-lockfile
+            - rm src/helpers/variables.js
+            - cp src/helpers/production.variables.js src/helpers/variables.js
+            - yarn build
+            - cp -r build ../dpc-backend/build
+            - cd ../dpc-backend
+            - yarn --frozen-lockfile
+            - sed -i 's/{NODE_ENV}/production/g' app.yaml
+            - sed -i -e 's%{GOOGLE_CLIENT_EMAIL}%'"${PROD_GOOGLE_CLIENT_EMAIL}"'%g' app.yaml
+            - sed -i -e 's%{GOOGLE_PROJECT_ID}%'"${PROD_GOOGLE_PROJECT_ID}"'%g' app.yaml
+            - sed -i -e 's%{DIALOGFLOW_SESSION_ID}%'"${PROD_DIALOGFLOW_SESSION_ID}"'%g' app.yaml
+            - sed -i 's/{DIALOGFLOW_SESSION_LANGUAGE_CODE}/en/g' app.yaml
+            - echo ${PROD_GCLOUD_DEPLOYMENT_KEY} > gcloud_key.json
+            - gcloud auth activate-service-account --key-file=gcloud_key.json
+            - gcloud config list
+            - gcloud beta app deploy --project ${PROD_GOOGLE_PROJECT_ID}
