@@ -246,6 +246,17 @@ module.exports = class extends Generator {
           }
         );
 
+        this.fs.copyTpl(
+          this.templatePath("pipelines/aws-twilio/package.frontend.json"),
+          this.destinationPath(`frontend/package.json`),
+          {
+            chatbotName: chatbotNameNoSpaces,
+            chatbotDescription,
+            authorName,
+            companyName
+          }
+        );
+
         this.fs.copy(
           this.templatePath(`pipelines/aws-twilio/keys.js`),
           this.destinationPath(`backend/config/keys.js`)
@@ -294,6 +305,17 @@ module.exports = class extends Generator {
         this.fs.copyTpl(
           this.templatePath("pipelines/aws/frontend-serverless.yml"),
           this.destinationPath(`frontend/serverless.yml`),
+          {
+            chatbotName: chatbotNameNoSpaces,
+            chatbotDescription,
+            authorName,
+            companyName
+          }
+        );
+
+        this.fs.copyTpl(
+          this.templatePath("pipelines/aws/package.frontend.json"),
+          this.destinationPath(`frontend/package.json`),
           {
             chatbotName: chatbotNameNoSpaces,
             chatbotDescription,

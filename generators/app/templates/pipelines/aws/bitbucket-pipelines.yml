@@ -35,7 +35,7 @@ pipelines:
             - cd ./frontend
             - yarn --frozen-lockfile
             - rm src/helpers/variables.js
-            - cp src/helpers/staging.variables.js src/helpers/variables.js
+            - cp src/helpers/production.variables.js src/helpers/variables.js
             - yarn build
             - serverless deploy --stage production
             - rm -r build
@@ -47,4 +47,4 @@ pipelines:
             - export GOOGLE_PRIVATE_KEY=${GOOGLE_PRIVATE_KEY}
             - export DIALOGFLOW_SESSION_ID=${DIALOGFLOW_SESSION_ID}
             - export DIALOGFLOW_SESSION_LANGUAGE_CODE=${DIALOGFLOW_SESSION_LANGUAGE_CODE}
-            - serverless deploy --stage staging
+            - serverless deploy --stage production
