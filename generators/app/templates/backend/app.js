@@ -4,7 +4,7 @@ const cors = require('cors');
 const app = express();
 const serverless = require('serverless-http');
 const handler = serverless(app)
-const isInLambda = !!process.env.LAMBDA_TASK_ROOT;
+
 
 // config 
 require('dotenv').config()
@@ -25,10 +25,11 @@ app.get('/',  (req, res, next) => {
     res.send({response: 'The Api is live and running'})
 })
 
+const isInLambda = !!process.env.LAMBDA_TASK_ROOT;
 const PORT = process.env.PORT || 5000;
 
 if (isInLambda) {
-    module.exports.server = async (event, context) => {
+    module.exports.handler = async (event, context) => {
     return await handler(event, context);
 }  
 } else {
@@ -37,5 +38,3 @@ if (isInLambda) {
         console.log('Press Ctrl+C to quit.');
     });
 }
-
-module.exports = app;

@@ -1,0 +1,74 @@
+service: <%= chatbotName %>-chat-bot
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  stage: ${opt:stage, staging}
+  region: ap-southeast-2
+
+plugins: 
+  - serverless-s3-sync
+
+custom:
+  bucketName: <%= chatbotName %>-chat-bot-frontend-${opt:stage}
+  s3Sync: 
+    - bucketName: ${self:custom.bucketName}
+      localDir: build/
+
+resources:
+  Resources: 
+    HostingBucket: 
+      Type: AWS::S3::Bucket
+      Properties: 
+        BucketName: ${self:custom.bucketName}
+        AccessControl: PublicRead
+        WebsiteConfiguration: 
+          IndexDocument: index.html
+          ErrorDocument: index.html
+    S3AccessPolicy: 
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket: 
+          Ref: HostingBucket
+        PolicyDocument: 
+          Statement: 
+            - Sid: PublicReadGetObject
+              Effect: Allow
+              Principal: '*'
+              Action:
+                - s3:GetObject
+              Resource: arn:aws:s3:::${self:custom.bucketName}/*
+    CloudFrontDistribution: 
+      Type: AWS::CloudFront::Distribution
+      Properties:
+        DistributionConfig: 
+          Origins:
+            - DomainName: ${self:custom.bucketName}.s3.amazonaws.com
+              Id: <%= chatbotName %>ChatBotFrontend
+              CustomOriginConfig:
+                HTTPPort: 80
+                HTTPSPort: 443
+                OriginProtocolPolicy: https-only
+          Enabled: 'true'
+          DefaultRootObject: index.html
+          CustomErrorResponses: 
+            - ErrorCode: 404
+              ResponseCode: 200
+              ResponsePagePath: /index.html
+          DefaultCacheBehavior:
+            AllowedMethods:
+              - DELETE
+              - GET
+              - HEAD
+              - OPTIONS
+              - PATCH
+              - POST
+              - PUT
+            TargetOriginId: <%= chatbotName %>ChatBotFrontend
+            ForwardedValues:
+              QueryString: 'false'
+              Cookies:
+                  Forward: none
+            ViewerProtocolPolicy: redirect-to-https
+          ViewerCertificate:
+            CloudFrontDefaultCertificate: true

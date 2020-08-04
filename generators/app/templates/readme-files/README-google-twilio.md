@@ -11,7 +11,7 @@ To start the frontend.
 
 ## Develop Locally
 
-In order to develop locally you will need to go to `backend/config.chatbot.js` and uncomment the below lines of code. 
+In order to develop locally you will need to go to `backend/config.chatbot.js` and make sure the credentials object and credentials variable inside the sessionsClient object are not commented out. When deploying to Google Cloud you will need to make sure these lines of code are commented out as pictured below as the app engine instance will connect to the dialogflow project which has been made in the same google cloud project.  
 
 ![uncomment these lines.](./readme-images/uncomment.png "Uncomment these lines")
 
