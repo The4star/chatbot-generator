@@ -1,0 +1,32 @@
+service: <%= chatbotName %>-backend
+package:
+  exclude:
+    - .env
+    - test
+    - config/dev.js
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  stage: ${opt:stage}
+  region: ap-southeast-2
+  environment:
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+    GOOGLE_CLIENT_EMAIL: ${env:GOOGLE_CLIENT_EMAIL}
+    GOOGLE_PROJECT_ID: ${env:GOOGLE_PROJECT_ID}
+    GOOGLE_PRIVATE_KEY: ${env:GOOGLE_PRIVATE_KEY}
+    DIALOGFLOW_SESSION_ID: ${env:DIALOGFLOW_SESSION_ID}
+    DIALOGFLOW_SESSION_LANGUAGE_CODE: ${env:DIALOGFLOW_SESSION_LANGUAGE_CODE}
+    
+functions:
+  app:
+    handler: app.handler
+    events:
+      - http:
+          path: /
+          method: ANY
+          cors: true
+      - http:
+          path: /{proxy+}
+          method: ANY
+          cors: true

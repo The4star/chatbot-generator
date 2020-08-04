@@ -120,6 +120,11 @@ module.exports = class extends Generator {
             companyName
           }
         );
+
+        this.fs.copy(
+          this.templatePath(`readme-images`),
+          this.destinationPath(`readme-images`)
+        );
     
         this.fs.copyTpl(
           this.templatePath("pipelines/google-app-engine-twilio/bitbucket-pipelines.yml"),
@@ -160,6 +165,11 @@ module.exports = class extends Generator {
             companyName
           }
         );
+
+        this.fs.copy(
+          this.templatePath(`readme-images`),
+          this.destinationPath(`readme-images`)
+        );
     
         this.fs.copyTpl(
           this.templatePath("pipelines/google-app-engine/bitbucket-pipelines.yml"),
@@ -189,11 +199,119 @@ module.exports = class extends Generator {
         );
       }
     } else if (deployment === "AWS") {
-      // if (twilioFlex === true) {
-      //   return
-      // } else {
-      //   return
-      // }
+
+      if (twilioFlex === true) {
+
+        this.fs.copyTpl(
+          this.templatePath("readme-files/README-aws-twilio.md"),
+          this.destinationPath(`README.md`),
+          {
+            chatbotName: chatbotNameNoSpaces,
+            chatbotDescription,
+            authorName,
+            companyName
+          }
+        );
+    
+        this.fs.copyTpl(
+          this.templatePath("pipelines/aws-twilio/bitbucket-pipelines.yml"),
+          this.destinationPath(`bitbucket-pipelines.yml`),
+          {
+            chatbotName: chatbotNameNoSpaces,
+            chatbotDescription,
+            authorName,
+            companyName
+          }
+        );
+    
+        this.fs.copyTpl(
+          this.templatePath("pipelines/aws-twilio/backend-serverless.yml"),
+          this.destinationPath(`backend/serverless.yml`),
+          {
+            chatbotName: chatbotNameNoSpaces,
+            chatbotDescription,
+            authorName,
+            companyName
+          }
+        );
+
+        this.fs.copyTpl(
+          this.templatePath("pipelines/aws-twilio/frontend-serverless.yml"),
+          this.destinationPath(`frontend/serverless.yml`),
+          {
+            chatbotName: chatbotNameNoSpaces,
+            chatbotDescription,
+            authorName,
+            companyName
+          }
+        );
+
+        this.fs.copy(
+          this.templatePath(`pipelines/aws-twilio/keys.js`),
+          this.destinationPath(`backend/config/keys.js`)
+        );
+
+        this.fs.copy(
+          this.templatePath(`pipelines/this.copy.twilio.env`),
+          this.destinationPath(`backend/.env`)
+        );
+
+      } else {
+
+        this.fs.copyTpl(
+          this.templatePath("readme-files/README-aws.md"),
+          this.destinationPath(`README.md`),
+          {
+            chatbotName: chatbotNameNoSpaces,
+            chatbotDescription,
+            authorName,
+            companyName
+          }
+        );
+    
+        this.fs.copyTpl(
+          this.templatePath("pipelines/aws/bitbucket-pipelines.yml"),
+          this.destinationPath(`bitbucket-pipelines.yml`),
+          {
+            chatbotName: chatbotNameNoSpaces,
+            chatbotDescription,
+            authorName,
+            companyName
+          }
+        );
+    
+        this.fs.copyTpl(
+          this.templatePath("pipelines/aws/backend-serverless.yml"),
+          this.destinationPath(`backend/serverless.yml`),
+          {
+            chatbotName: chatbotNameNoSpaces,
+            chatbotDescription,
+            authorName,
+            companyName
+          }
+        );
+
+        this.fs.copyTpl(
+          this.templatePath("pipelines/aws/frontend-serverless.yml"),
+          this.destinationPath(`frontend/serverless.yml`),
+          {
+            chatbotName: chatbotNameNoSpaces,
+            chatbotDescription,
+            authorName,
+            companyName
+          }
+        );
+
+        this.fs.copy(
+          this.templatePath(`pipelines/aws/keys.js`),
+          this.destinationPath(`backend/config/keys.js`)
+        );
+
+        this.fs.copy(
+          this.templatePath(`pipelines/this.copy.env`),
+          this.destinationPath(`backend/.env`)
+        )
+      }
     }
   }
 

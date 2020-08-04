@@ -6,13 +6,13 @@ pipelines:
           image: spatical/voxa-build:latest
           script:
             - yarn config set cache-folder .yarn
-            - cd ./dpc-frontend
+            - cd ./frontend
             - yarn --frozen-lockfile
             - rm src/helpers/variables.js
             - cp src/helpers/staging.variables.js src/helpers/variables.js
             - yarn build
-            - cp -r build ../dpc-backend/build
-            - cd ../dpc-backend
+            - cp -r build ../backend/build
+            - cd ../backend
             - yarn --frozen-lockfile
             - sed -i 's/{NODE_ENV}/staging/g' app.yaml
             - sed -i -e 's%{GOOGLE_CLIENT_EMAIL}%'"${DEV_GOOGLE_CLIENT_EMAIL}"'%g' app.yaml
@@ -36,13 +36,13 @@ pipelines:
           image: spatical/voxa-build:latest
           script:
             - yarn config set cache-folder .yarn
-            - cd ./dpc-frontend
+            - cd ./frontend
             - yarn --frozen-lockfile
             - rm src/helpers/variables.js
             - cp src/helpers/production.variables.js src/helpers/variables.js
             - yarn build
-            - cp -r build ../dpc-backend/build
-            - cd ../dpc-backend
+            - cp -r build ../backend/build
+            - cd ../backend
             - yarn --frozen-lockfile
             - sed -i 's/{NODE_ENV}/production/g' app.yaml
             - sed -i -e 's%{GOOGLE_CLIENT_EMAIL}%'"${PROD_GOOGLE_CLIENT_EMAIL}"'%g' app.yaml

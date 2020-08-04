@@ -1,0 +1,64 @@
+pipelines:
+  branches:
+    master:
+      - step:
+          name: Deploy <%= chatbotName %> Chatbot UI to AWS [staging] 
+          image: 20minutes/node-10-yarn-serverless:latest
+          script:
+            - export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+            - export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+            - yarn config set cache-folder .yarn
+            - cd ./frontend
+            - yarn --frozen-lockfile
+            - rm src/helpers/variables.js
+            - cp src/helpers/staging.variables.js src/helpers/variables.js
+            - yarn build
+            - serverless deploy --stage staging
+            - rm -r build
+            - cd ../backend
+            - yarn --frozen-lockfile
+            - export NODE_ENV=staging
+            - export GOOGLE_CLIENT_EMAIL=${GOOGLE_CLIENT_EMAIL}
+            - export GOOGLE_PROJECT_ID=${GOOGLE_PROJECT_ID}
+            - export GOOGLE_PRIVATE_KEY=${GOOGLE_PRIVATE_KEY}
+            - export DIALOGFLOW_SESSION_ID=${DIALOGFLOW_SESSION_ID}
+            - export DIALOGFLOW_SESSION_LANGUAGE_CODE=${DIALOGFLOW_SESSION_LANGUAGE_CODE}
+            - export TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
+            - export TWILIO_FLEX_FLOW_SID=${TWILIO_FLEX_FLOW_SID}
+            - export TWILIO_FLEX_CHAT_SERVICE=${TWILIO_FLEX_CHAT_SERVICE}
+            - export TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
+            - export TWILIO_API_KEY=${TWILIO_API_KEY}
+            - export TWILIO_API_SECRET=${TWILIO_API_SECRET}
+            - export TWILIO_SERVICE_SID=${TWILIO_SERVICE_SID}
+            - serverless deploy --stage staging
+    production:
+      - step:
+          name: Deploy <%= chatbotName %> Chatbot UI to AWS [production] 
+          image: 20minutes/node-10-yarn-serverless:latest
+          script:
+            - export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+            - export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+            - yarn config set cache-folder .yarn
+            - cd ./frontend
+            - yarn --frozen-lockfile
+            - rm src/helpers/variables.js
+            - cp src/helpers/staging.variables.js src/helpers/variables.js
+            - yarn build
+            - serverless deploy --stage production
+            - rm -r build
+            - cd ../backend
+            - yarn --frozen-lockfile
+            - export NODE_ENV=production
+            - export GOOGLE_CLIENT_EMAIL=${GOOGLE_CLIENT_EMAIL}
+            - export GOOGLE_PROJECT_ID=${GOOGLE_PROJECT_ID}
+            - export GOOGLE_PRIVATE_KEY=${GOOGLE_PRIVATE_KEY}
+            - export DIALOGFLOW_SESSION_ID=${DIALOGFLOW_SESSION_ID}
+            - export DIALOGFLOW_SESSION_LANGUAGE_CODE=${DIALOGFLOW_SESSION_LANGUAGE_CODE}
+            - export TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
+            - export TWILIO_FLEX_FLOW_SID=${TWILIO_FLEX_FLOW_SID}
+            - export TWILIO_FLEX_CHAT_SERVICE=${TWILIO_FLEX_CHAT_SERVICE}
+            - export TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
+            - export TWILIO_API_KEY=${TWILIO_API_KEY}
+            - export TWILIO_API_SECRET=${TWILIO_API_SECRET}
+            - export TWILIO_SERVICE_SID=${TWILIO_SERVICE_SID}
+            - serverless deploy --stage staging
