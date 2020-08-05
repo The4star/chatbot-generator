@@ -38,7 +38,8 @@ import './ie-chatbot.styles.scss'
 import { 
   // deployedURL, 
   apiURL,
-  customWelcomeMessage
+  customWelcomeMessage,
+  defaultChips
 }  from '../../helpers/variables'
 
 
@@ -185,7 +186,7 @@ class Chatbot extends React.Component {
             const allMessages = []
             const botMessage = formatHyphens(res.data.intent_response) 
             const status = res.data.status;
-            const chips = status === "complete" ? null : res.data.chips && res.data.chips !== "none" ? res.data.chips : [{value: "Information for businesses", link: ""}, {value: "Information for health", link: ""},{value: "Financial support", link:""}];
+            const chips = status === "complete" ? null : res.data.chips && res.data.chips !== "none" ? res.data.chips : defaultChips;
             const cards = res.data.cards;
 
             if (botMessage) {
