@@ -22,8 +22,8 @@ you will also need a .env file with the following, **if you have access to the g
 GOOGLE_CLIENT_EMAIL= {email from your dialogflow integrations service account}
 GOOGLE_PRIVATE_KEY= {private key from your dialogflow integrations service account}
 GOOGLE_PROJECT_ID= {project id from your dialogflow integrations service account}
-DIALOGFLOW_SESSION_ID=versa
-DIALOGFLOW_SESSION_LANGUAGE_CODE=en
+DIALOGFLOW_SESSION_ID=<%= chatbotName %>-session
+DIALOGFLOW_SESSION_LANGUAGE_CODE={your dialogflow project's language code e.g: en}
 TWILIO_ACCOUNT_SID= {retrieve from twilio project}
 TWILIO_FLEX_FLOW_SID= {retrieve from twilio project}
 TWILIO_FLEX_CHAT_SERVICE= {retrieve from twilio project}

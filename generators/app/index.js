@@ -82,24 +82,6 @@ module.exports = class extends Generator {
       }
     );
 
-    this.fs.copyTpl(
-      this.templatePath("set-up-your-chatbot-step-by-step-guide.md"),
-      this.destinationPath(
-        `set-up-${chatbotNameNoSpaces}-step-by-step-guide.md`
-      ),
-      {
-        chatbotName: chatbotNameNoSpaces,
-        chatbotDescription,
-        authorName,
-        companyName
-      }
-    );
-    
-    this.fs.copy(
-      this.templatePath(`set-up-imgs`),
-      this.destinationPath(`set-up-imgs`)
-    );
-
     this.fs.copy(
       this.templatePath(`pipelines/this.copy.gitignore`),
       this.destinationPath(`.gitignore`)
@@ -153,6 +135,29 @@ module.exports = class extends Generator {
           this.destinationPath(`backend/.env`)
         );
 
+        this.fs.copyTpl(
+          this.templatePath("set-up/google-twilio.md"),
+          this.destinationPath(
+            `set-up-${chatbotNameNoSpaces}-step-by-step-guide.md`
+          ),
+          {
+            chatbotName: chatbotNameNoSpaces,
+            chatbotDescription,
+            authorName,
+            companyName
+          }
+        );
+        
+        this.fs.copy(
+          this.templatePath(`set-up/set-up-imgs`),
+          this.destinationPath(`set-up-imgs`)
+        );
+
+        this.fs.copy(
+          this.templatePath(`TwilioEnableCustomChatPlugin.js`),
+          this.destinationPath(`TwilioEnableCustomChatPlugin.js`)
+        );
+
       } else {
 
         this.fs.copyTpl(
@@ -196,6 +201,24 @@ module.exports = class extends Generator {
         this.fs.copy(
           this.templatePath(`pipelines/this.copy.env`),
           this.destinationPath(`backend/.env`)
+        );
+
+        this.fs.copyTpl(
+          this.templatePath("set-up/google.md"),
+          this.destinationPath(
+            `set-up-${chatbotNameNoSpaces}-step-by-step-guide.md`
+          ),
+          {
+            chatbotName: chatbotNameNoSpaces,
+            chatbotDescription,
+            authorName,
+            companyName
+          }
+        );
+        
+        this.fs.copy(
+          this.templatePath(`set-up/set-up-imgs`),
+          this.destinationPath(`set-up-imgs`)
         );
       }
     } else if (deployment === "AWS") {
@@ -267,6 +290,29 @@ module.exports = class extends Generator {
           this.destinationPath(`backend/.env`)
         );
 
+        this.fs.copyTpl(
+          this.templatePath("set-up/aws-twilio.md"),
+          this.destinationPath(
+            `set-up-${chatbotNameNoSpaces}-step-by-step-guide.md`
+          ),
+          {
+            chatbotName: chatbotNameNoSpaces,
+            chatbotDescription,
+            authorName,
+            companyName
+          }
+        );
+        
+        this.fs.copy(
+          this.templatePath(`set-up/set-up-imgs`),
+          this.destinationPath(`set-up-imgs`)
+        );
+
+        this.fs.copy(
+          this.templatePath(`TwilioEnableCustomChatPlugin.js`),
+          this.destinationPath(`TwilioEnableCustomChatPlugin.js`)
+        );
+
       } else {
 
         this.fs.copyTpl(
@@ -333,6 +379,24 @@ module.exports = class extends Generator {
           this.templatePath(`pipelines/this.copy.env`),
           this.destinationPath(`backend/.env`)
         )
+
+        this.fs.copyTpl(
+          this.templatePath("set-up/aws.md"),
+          this.destinationPath(
+            `set-up-${chatbotNameNoSpaces}-step-by-step-guide.md`
+          ),
+          {
+            chatbotName: chatbotNameNoSpaces,
+            chatbotDescription,
+            authorName,
+            companyName
+          }
+        );
+        
+        this.fs.copy(
+          this.templatePath(`set-up/set-up-imgs`),
+          this.destinationPath(`set-up-imgs`)
+        );
       }
     }
   }
