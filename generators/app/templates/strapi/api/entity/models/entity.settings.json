@@ -1,0 +1,23 @@
+{
+  "kind": "collectionType",
+  "collectionName": "entities",
+  "info": {
+    "name": "Entity",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "EntityName": {
+      "type": "string"
+    },
+    "EntityValue": {
+      "type": "component",
+      "repeatable": true,
+      "component": "entities.entity-value"
+    }
+  }
+}

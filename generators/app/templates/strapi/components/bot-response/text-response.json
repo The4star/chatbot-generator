@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_bot_response_text_responses",
+  "info": {
+    "name": "TextResponse",
+    "icon": "ad",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "Text": {
+      "type": "richtext"
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "name": "strapi-interaction-model",
+  "private": true,
+  "version": "0.1.0",
+  "description": "A Strapi application",
+  "scripts": {
+    "develop": "strapi develop",
+    "start": "strapi start",
+    "build": "strapi build",
+    "strapi": "strapi",
+    "adminDev": "strapi develop --watch-admin"
+  },
+  "devDependencies": {},
+  "dependencies": {
+    "@google-cloud/dialogflow": "^3.3.0",
+    "knex": "<0.20.0",
+    "pg": "latest",
+    "strapi": "3.5.1",
+    "strapi-admin": "3.5.1",
+    "strapi-connector-bookshelf": "3.5.1",
+    "strapi-plugin-content-manager": "3.5.1",
+    "strapi-plugin-content-type-builder": "3.5.1",
+    "strapi-plugin-email": "3.5.1",
+    "strapi-plugin-upload": "3.5.1",
+    "strapi-plugin-users-permissions": "3.5.1",
+    "strapi-utils": "3.5.1",
+    "uuid": "^8.3.2",
+    "zip-local": "^0.3.4"
+  },
+  "author": {
+    "name": "A Strapi developer"
+  },
+  "strapi": {
+    "uuid": "0980d8cf-8117-4d72-b873-55ce221828af"
+  },
+  "engines": {
+    "node": ">=10.16.0 <=14.x.x",
+    "npm": "^6.0.0"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,57 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/df/sync",
+      "handler": "intent.dfsync"
+    },
+    {
+      "method": "GET",
+      "path": "/intents",
+      "handler": "intent.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/intents/count",
+      "handler": "intent.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/intents/:id",
+      "handler": "intent.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/intents",
+      "handler": "intent.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/intents/:id",
+      "handler": "intent.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/intents/:id",
+      "handler": "intent.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}
