@@ -40,7 +40,7 @@ class DialogflowFormatter {
       webhookUsed: false,
       webhookForSlotFilling: false,
       fallbackIntent: intent.IntentName === "DefaultFallbackIntent" ? true : false,
-      events: intent.event ? [{ name: intent.event }] : [],
+      events: intent.EventName ? [{ name: intent.EventName }] : [],
       conditionalResponses: [],
       condition: "",
       conditionalFollowupEvents: []
