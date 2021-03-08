@@ -137,3 +137,7 @@ PROD_GOOGLE_PROJECT_ID={the production project id}
 * Click this button and your custom injection script will be copied to your clipboard and vchat will give you instructions on how to use it. 
 
 * If the injection script button is not appearing go to src > helpers > variables.js and make sure the url is in the correct format with a forward slash '/' at the end of the address e.g "https://<%= chatbotName %>ts.r.appspot.com/".
+
+## Optional Strapi Integration
+
+If you are using strapi to create your interaction model, you can follow the instructions in the readme file in the strapi folder. 
