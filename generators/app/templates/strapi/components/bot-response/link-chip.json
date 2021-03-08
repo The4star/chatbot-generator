@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_bot_response_link_chips",
+  "info": {
+    "name": "Link Chip",
+    "icon": "link",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "Text": {
+      "type": "string"
+    },
+    "Link": {
+      "type": "string"
+    }
+  }
+}

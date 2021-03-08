@@ -1,0 +1,42 @@
+{
+  "kind": "collectionType",
+  "collectionName": "intents",
+  "info": {
+    "name": "intent",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "IntentName": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "Utterances": {
+      "type": "text"
+    },
+    "Priority": {
+      "type": "enumeration",
+      "enum": ["Ignore", "Default", "High"],
+      "default": "Default"
+    },
+    "EventName": {
+      "type": "string"
+    },
+    "entities": {
+      "collection": "entity"
+    },
+    "Responses": {
+      "type": "dynamiczone",
+      "components": ["bot-response.text-response"]
+    },
+    "SuggestionChips": {
+      "type": "dynamiczone",
+      "components": ["bot-response.suggestion-chip", "bot-response.link-chip"]
+    }
+  }
+}

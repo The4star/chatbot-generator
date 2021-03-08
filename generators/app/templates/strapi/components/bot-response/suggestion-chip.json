@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_bot_response_suggestion_chips",
+  "info": {
+    "name": "SuggestionChip",
+    "icon": "microchip",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "Text": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    }
+  }
+}

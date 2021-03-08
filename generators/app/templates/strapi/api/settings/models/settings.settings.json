@@ -1,0 +1,35 @@
+{
+  "kind": "singleType",
+  "collectionName": "settings",
+  "info": {
+    "name": "Settings",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "DialogflowProjectName": {
+      "type": "string",
+      "required": true
+    },
+    "DialogflowServiceAccount": {
+      "type": "json"
+    },
+    "MinConfidence": {
+      "type": "decimal",
+      "default": 0.3
+    },
+    "BotDescription": {
+      "type": "text",
+      "required": true
+    },
+    "DefaultFallbackIntent": {
+      "type": "component",
+      "repeatable": false,
+      "component": "bot-response.default-fallback-intent"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_entities_entity_values",
+  "info": {
+    "name": "EntityValue",
+    "icon": "air-freshener"
+  },
+  "options": {},
+  "attributes": {
+    "Key": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "Synonyms": {
+      "type": "text"
+    }
+  }
+}

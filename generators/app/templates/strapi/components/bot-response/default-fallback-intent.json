@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_bot_response_default_fallback_intents",
+  "info": {
+    "name": "DefaultFallbackIntent",
+    "icon": "fast-backward",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "Responses": {
+      "type": "component",
+      "repeatable": true,
+      "component": "bot-response.text-response"
+    }
+  }
+}
