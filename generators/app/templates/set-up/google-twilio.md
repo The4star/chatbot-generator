@@ -12,7 +12,7 @@
 * cd into the folder and run *npm install* or *yarn install* whichever you prefer.
 
 ``` terminal
-cd <%= chatbotName %>-voxa 
+cd backend
 
 yarn install or npm install
 ```
@@ -58,7 +58,7 @@ npm dev
 * cd into the frontend folder and run *npm install* or *yarn install* whichever you prefer.
 
 ``` terminal
-cd <%= chatbotName %>-voxa 
+cd frontend
 
 yarn install or npm install
 ```
