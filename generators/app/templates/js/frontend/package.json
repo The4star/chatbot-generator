@@ -8,7 +8,6 @@
     "@material-ui/icons": "^4.9.1",
     "array-findindex-polyfill": "^0.1.0",
     "axios": "^0.19.0",
-    "axios-retry": "^3.1.2",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "ie-array-find-polyfill": "^1.1.0",
