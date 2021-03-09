@@ -70,13 +70,6 @@ class Chatbot extends React.Component {
       disableInput: false,
       debug: false
     }
-
-    if (cookies.get('userId') === undefined) {
-      cookies.set('userId', uuid(), { path: '/' })
-      cookies.set('firstTimeVisitor', "true", { path: '/' })
-    } else {
-      cookies.set('firstTimeVisitor', "false", { path: '/' })
-    }
   }
 
   // method for adding delay

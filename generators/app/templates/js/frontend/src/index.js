@@ -4,14 +4,14 @@ import 'react-app-polyfill/stable';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router } from 'react-router-dom'
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { BotStateProvider } from './state/bot/BotStateProvider'
 
 ReactDOM.render(
-    <Router>
+    <BotStateProvider>
         <App />
-    </Router>
+    </BotStateProvider>
     , document.getElementById('versa-chat-bot-ui'));
 
 // If you want your app to work offline and load faster, you can change
