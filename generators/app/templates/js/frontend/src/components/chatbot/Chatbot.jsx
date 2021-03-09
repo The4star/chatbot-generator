@@ -29,10 +29,6 @@ import {
 // flex 
 import Flex from '../../twilio/flex'
 
-// sass
-import './chatbot.styles.scss'
-import './ie-chatbot.styles.scss'
-
 // site where live chat bot is deployed set in src/helpers/deployed-url
 import {
   // deployedURL, 
