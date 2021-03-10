@@ -1,6 +1,6 @@
 import React from 'react';
 
-const MenuItem = ({ title, image, imageClass, link, functionName }) => {
+const MenuItem = ({ title, image, link, functionName }) => {
 
   if (link) {
     return (

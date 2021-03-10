@@ -356,82 +356,80 @@ const Chatbot = () => {
     return (
       <>
         <div className="chatbot-button" onClick={() => dispatch({ type: "toggleBot" })} >{closeIcon}</div>
-        <div className="widget">
-          <div className="chatbot">
-            {
-              showRestartMessage ?
-                <RestartPopup />
-                :
-                null
-            }
-            <div className="main-title">
-              <div className="logo-section">
-                <div className="logo" alt="logo" />
-                <div className="title-text">
-                  <h4>
-                    <%=chatbotName%>
+        <div className="chatbot">
+          {
+            showRestartMessage ?
+              <RestartPopup />
+              :
+              null
+          }
+          <div className="chatbot__main-title">
+            <div className="logo-section">
+              <div className="logo-section__logo" alt="logo" />
+              <div className="title-text">
+                <h4>
+                  <%=chatbotName%>
                           </h4>
-                  <p>
-                    Virtual Assistant
+                <p>
+                  Virtual Assistant
                           </p>
-                </div>
-              </div>
-
-              <div className="buttons">
-                {
-                  isDeployedSite() ?
-                    <p className="header-button header-button-close" onClick={() => getInjectionScript()}>
-                      Injection Script
-                            </p> : null
-                }
-                <div className="header-button header-button-menu" alt="download" onClick={() => dispatch({ type: "toggleMenu" })}>{menuButton}</div>
-                <div className="header-button header-button-close" onClick={() => dispatch({ type: "toggleBot" })}>{closeIcon}</div>
-                {/* <img className="header-button" src={`${deployedURL}/img/download.png`} alt="download" onClick={this.downloadConversation}/> */}
               </div>
             </div>
+
+            <div className="buttons">
+              {
+                isDeployedSite() ?
+                  <p className="header-button" onClick={() => getInjectionScript()}>
+                    Injection Script
+                            </p> : null
+              }
+              <div className="header-button" alt="download" onClick={() => dispatch({ type: "toggleMenu" })}>{menuButton}</div>
+              <div className="header-button" onClick={() => dispatch({ type: "toggleBot" })}>{closeIcon}</div>
+              {/* <img className="header-button" src={`${deployedURL}/img/download.png`} alt="download" onClick={this.downloadConversation}/> */}
+            </div>
+          </div>
+          {
+            showMenu ?
+              <Menu>
+                <MenuItem
+                  image={printIcon}
+                  functionName={printConversation}
+                  title="Print Conversation"
+                />
+                <MenuItem
+                  image={endConversationIcon}
+                  functionName={restartChat}
+                  title="End Conversation"
+                />
+              </Menu>
+              : null
+          }
+          <div className="messages-container">
+
             {
-              showMenu ?
-                <Menu>
-                  <MenuItem
-                    image={printIcon}
-                    functionName={printConversation}
-                    title="Print Conversation"
-                  />
-                  <MenuItem
-                    image={endConversationIcon}
-                    functionName={restartChat}
-                    title="End Conversation"
-                  />
-                </Menu>
+              messages.length > 0 ?
+                renderMessages(messages)
+                : <Spinner />
+            }
+            {
+              showDots ?
+                <TypingDots />
                 : null
             }
-            <div className="messages-container">
 
-              {
-                messages.length > 0 ?
-                  renderMessages(messages)
-                  : <Spinner />
-              }
-              {
-                showDots ?
-                  <TypingDots />
-                  : null
-              }
-
-              <div ref={(el) => messagesEnd = el}></div>
-            </div>
-
-            {
-              disableInput ?
-                null :
-                <form className="input-form" onSubmit={handleSubmit}>
-                  <input type="text" onChange={(e) => changeButtonStyles(e)} placeholder="Send a message..." className="user-input" />
-                  {/* <button className="input-buttons" onClick={handleUpload} type="button">{paperclip}</button> */}
-                  <button type="submit" className="submit">{sendButton}</button>
-                </form>
-            }
-
+            <div ref={(el) => messagesEnd = el}></div>
           </div>
+
+          {
+            disableInput ?
+              null :
+              <form className="input-form" onSubmit={handleSubmit}>
+                <input type="text" onChange={(e) => changeButtonStyles(e)} placeholder="Send a message..." className="input-form__user-input" />
+                {/* <button className="input-buttons" onClick={handleUpload} type="button">{paperclip}</button> */}
+                <button type="submit" className="input-form__submit">{sendButton}</button>
+              </form>
+          }
+
         </div>
       </>
     )

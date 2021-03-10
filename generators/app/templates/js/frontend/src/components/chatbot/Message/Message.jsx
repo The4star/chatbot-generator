@@ -10,11 +10,11 @@ const Message = ({ speaker, text, cards, chips, handleQuickReply, cardStyle, qRS
 
     <>
         {speaker !== 'user' ?
-            <div className="wrapper">
+            <div className="message-wrapper">
 
                 {!cardStyle && !qRStyle && !scriptStyle ?
                     <div className="avatar-section">
-                        <div className="avatar">
+                        <div className="avatar-section__avatar">
                         </div>
                     </div>
                     :
@@ -48,7 +48,6 @@ const Message = ({ speaker, text, cards, chips, handleQuickReply, cardStyle, qRS
                                             key={i}
                                             header={card.structValue.fields.header.stringValue}
                                             link={card.structValue.fields.link.stringValue}
-                                            price={card.structValue.fields.price.stringValue}
                                             image={card.structValue.fields.image.stringValue}
                                             description={card.structValue.fields.description.stringValue}
                                         />
@@ -82,7 +81,7 @@ const Message = ({ speaker, text, cards, chips, handleQuickReply, cardStyle, qRS
         }
         {
             speaker === 'user' ?
-                <div className="wrapper">
+                <div className="message-wrapper">
                     <div className="message-container-user">
                         <div className="message-content">
                             <p>{text}</p>
