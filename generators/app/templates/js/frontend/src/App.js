@@ -1,9 +1,9 @@
 import React from 'react';
 
 // components
-import Chatbot from './components/chatbot/chatbot.component';
+import Chatbot from './components/Chatbot/Chatbot';
 
-import './App.scss';
+import './styles/index.scss';
 
 const App = () => (
   <Chatbot />

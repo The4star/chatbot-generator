@@ -2,19 +2,17 @@ const dialogflow = require('dialogflow');
 const structjson = require('structjson');
 
 // keys
-const {googleProjectID, dialogFlowSessionID, dialogFlowSessionLanguageCode, googleClientEmail, googlePrivateKey} = require('./keys')
+const { googleProjectID, dialogFlowSessionID, dialogFlowSessionLanguageCode, googleClientEmail, googlePrivateKey } = require('./keys')
 
-// uncomment the credentials object below to run locally
 const credentials = {
     client_email: googleClientEmail,
     private_key: googlePrivateKey
 }
 
-// uncomment credentials below to run locally.
 const sessionClient = new dialogflow.SessionsClient({
-                                projectId: googleProjectID,
-                                credentials                                                      
-                            });
+    projectId: googleProjectID,
+    credentials
+});
 
 
 // performs a text query to dialogflow
@@ -42,23 +40,26 @@ const textQuery = async (text, userId, parameters = {}) => {
     // get the response from dialogflow and format the chips
     // and messages to be easily ingestible by the front end. 
     let response = await sessionClient.detectIntent(request);
-    const chips = response[0].queryResult.fulfillmentMessages[1] && response[0].queryResult.fulfillmentMessages[1].payload.fields.richContent.listValue.values[0].listValue.values[0].structValue.fields.options.listValue.values.map(chip => {
-      return { value: chip.structValue.fields.text.stringValue, link: chip.structValue.fields.link ? chip.structValue.fields.link.stringValue : ""}
+    const chips = response[0].queryResult.fulfillmentMessages[1] && response[0].queryResult.fulfillmentMessages[1].payload && response[0].queryResult.fulfillmentMessages[1].payload.fields.richContent.listValue.values[0].listValue.values[0].structValue.fields.options.listValue.values.map(chip => {
+        return { value: chip.structValue.fields.text.stringValue, link: chip.structValue.fields.link ? chip.structValue.fields.link.stringValue : "" }
     })
     const state = response[0].queryResult.webhookPayload && response[0].queryResult.webhookPayload.fields.state.stringValue;
     const result = response[0].queryResult
     const messages = result.fulfillmentMessages[0].text.text;
-    const intent_response = messages.map(message =>  message).join("\n\n");
+    const intentResponse = messages.map(message => message).join("\n\n");
     // Set function response status
     let status;
-    if(state === "Exit") {
+    if (state === "Exit") {
         status = 'complete';
     } else {
         status = 'in-progress';
     }
-  
-    return {'status': status, 'intent_response': intent_response, 'chips': chips ? chips : false};
-      
+
+    return {
+        status,
+        intentResponse,
+        chips: chips ? chips : false
+    };
 }
 
 // performs an event query to dialogflow
@@ -79,26 +80,29 @@ const eventQuery = async (event, userId, parameters = {}) => {
         },
     };
 
-  // get the response from dialogflow and format the chips
-  // and messages to be easily ingestible by the front end. 
-  let response = await sessionClient.detectIntent(request);
-  const chips = response[0].queryResult.fulfillmentMessages[1] && response[0].queryResult.fulfillmentMessages[1].payload.fields.richContent.listValue.values[0].listValue.values[0].structValue.fields.options.listValue.values.map(chip => {
-    return { value: chip.structValue.fields.text.stringValue, link: chip.structValue.fields.link ? chip.structValue.fields.link.stringValue : ""}
-  })
-  const state = response[0].queryResult.webhookPayload && response[0].queryResult.webhookPayload.fields.state.stringValue;
-  const result = response[0].queryResult
-  const messages = result.fulfillmentMessages[0].text.text;
-  const intent_response = messages.map(message =>  message).join("\n\n");
-  // Set function response status
-  let status;
-  if(state === "Exit") {
-      status = 'complete';
-  } else {
-      status = 'in-progress';
-  }
+    // get the response from dialogflow and format the chips
+    // and messages to be easily ingestible by the front end. 
+    let response = await sessionClient.detectIntent(request);
+    const chips = response[0].queryResult.fulfillmentMessages[1] && response[0].queryResult.fulfillmentMessages[1].payload && response[0].queryResult.fulfillmentMessages[1].payload.fields.richContent.listValue.values[0].listValue.values[0].structValue.fields.options.listValue.values.map(chip => {
+        return { value: chip.structValue.fields.text.stringValue, link: chip.structValue.fields.link ? chip.structValue.fields.link.stringValue : "" }
+    })
+    const state = response[0].queryResult.webhookPayload && response[0].queryResult.webhookPayload.fields.state.stringValue;
+    const result = response[0].queryResult
+    const messages = result.fulfillmentMessages[0].text.text;
+    const intentResponse = messages.map(message => message).join("\n\n");
+    // Set function response status
+    let status;
+    if (state === "Exit") {
+        status = 'complete';
+    } else {
+        status = 'in-progress';
+    }
 
-  return {'status': status, 'intent_response': intent_response, 'chips': chips ? chips : false};
-
+    return {
+        status,
+        intentResponse,
+        chips: chips ? chips : false
+    };
 }
 
 module.exports = {
