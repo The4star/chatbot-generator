@@ -284,7 +284,7 @@ const Chatbot = () => {
   const handleQuickReply = (text, payload) => {
     dispatch({ type: "showDots", showDots: true })
     textQuery(payload);
-    document.querySelector('.user-input').focus()
+    document.querySelector('.input-form__user-input').focus()
   }
 
   const restartChat = () => {
