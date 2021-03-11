@@ -165,7 +165,7 @@ const Chatbot = () => {
       const allMessages = []
       const botMessage = formatHyphens(res.data.intentResponse)
       const status = res.data.status;
-      const chips = status === "complete" ? null : res.data.chips && res.data.chips !== "none" ? res.data.chips : defaultChips;
+      const chips = status === "complete" ? null : res.data.chips ? res.data.chips : defaultChips;
       const cards = res.data.cards;
 
       formatMessages({ botMessage, chips, cards }, allMessages);
