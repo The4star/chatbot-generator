@@ -15,18 +15,24 @@ const preExportCheck = () => {
       throw new Error("Service Account not formatted properly.")
     }
   }
-
-
-
 }
 module.exports = {
-  async dfsync() {
+  async dfsync(context) {
     try {
+      // get the data
       const intents = await strapi.services.intent.find();
       const entities = await strapi.services.entity.find();
       DialogflowFormatter.botSettings = await strapi.services.settings.find();
       DialogflowFormatter.unformattedData = { intents, entities };
-      preExportCheck()
+
+      // get the host configuration for image urls
+      DialogflowFormatter.host = context.request.header.host;
+      DialogflowFormatter.schema = context.request.header.referer.includes('https') ? 'https://' : 'http://'
+
+      //check all is formatted correctly.
+      await preExportCheck()
+
+      //build and export.
       await DialogflowFormatter.build();
       await dialogflowExport();
       return {

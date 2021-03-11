@@ -165,7 +165,7 @@ const Chatbot = () => {
       const allMessages = []
       const botMessage = formatHyphens(res.data.intentResponse)
       const status = res.data.status;
-      const chips = status === "complete" ? null : res.data.chips && res.data.chips !== "none" ? res.data.chips : defaultChips;
+      const chips = status === "complete" ? null : res.data.chips ? res.data.chips : defaultChips;
       const cards = res.data.cards;
 
       formatMessages({ botMessage, chips, cards }, allMessages);
@@ -284,7 +284,7 @@ const Chatbot = () => {
   const handleQuickReply = (text, payload) => {
     dispatch({ type: "showDots", showDots: true })
     textQuery(payload);
-    document.querySelector('.user-input').focus()
+    document.querySelector('.input-form__user-input').focus()
   }
 
   const restartChat = () => {

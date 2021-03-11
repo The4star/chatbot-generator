@@ -40,9 +40,7 @@ const textQuery = async (text, userId, parameters = {}) => {
     // get the response from dialogflow and format the chips
     // and messages to be easily ingestible by the front end. 
     let response = await sessionClient.detectIntent(request);
-    const chips = response[0].queryResult.fulfillmentMessages[1] && response[0].queryResult.fulfillmentMessages[1].payload && response[0].queryResult.fulfillmentMessages[1].payload.fields.richContent.listValue.values[0].listValue.values[0].structValue.fields.options.listValue.values.map(chip => {
-        return { value: chip.structValue.fields.text.stringValue, link: chip.structValue.fields.link ? chip.structValue.fields.link.stringValue : "" }
-    })
+    const { chips, cards } = sortChipsAndCards(response)
     const state = response[0].queryResult.webhookPayload && response[0].queryResult.webhookPayload.fields.state.stringValue;
     const result = response[0].queryResult
     const messages = result.fulfillmentMessages[0].text.text;
@@ -58,7 +56,8 @@ const textQuery = async (text, userId, parameters = {}) => {
     return {
         status,
         intentResponse,
-        chips: chips ? chips : false
+        chips: chips ? chips : null,
+        cards: cards ? cards : null
     };
 }
 
@@ -83,9 +82,7 @@ const eventQuery = async (event, userId, parameters = {}) => {
     // get the response from dialogflow and format the chips
     // and messages to be easily ingestible by the front end. 
     let response = await sessionClient.detectIntent(request);
-    const chips = response[0].queryResult.fulfillmentMessages[1] && response[0].queryResult.fulfillmentMessages[1].payload && response[0].queryResult.fulfillmentMessages[1].payload.fields.richContent.listValue.values[0].listValue.values[0].structValue.fields.options.listValue.values.map(chip => {
-        return { value: chip.structValue.fields.text.stringValue, link: chip.structValue.fields.link ? chip.structValue.fields.link.stringValue : "" }
-    })
+    const { chips, cards } = sortChipsAndCards(response)
     const state = response[0].queryResult.webhookPayload && response[0].queryResult.webhookPayload.fields.state.stringValue;
     const result = response[0].queryResult
     const messages = result.fulfillmentMessages[0].text.text;
@@ -101,8 +98,43 @@ const eventQuery = async (event, userId, parameters = {}) => {
     return {
         status,
         intentResponse,
-        chips: chips ? chips : false
+        chips: chips ? chips : null,
+        cards: cards ? cards : null
     };
+}
+
+const sortChipsAndCards = (response) => {
+    let cards
+    const chips = response[0].queryResult.fulfillmentMessages[1] &&
+        response[0].queryResult.fulfillmentMessages[1].payload &&
+        response[0].queryResult.fulfillmentMessages[1].payload.fields.richContent.listValue.values[0].listValue.values[0].structValue.fields.options &&
+        response[0].queryResult.fulfillmentMessages[1].payload.fields.richContent.listValue.values[0].listValue.values[0].structValue.fields.options.listValue.values.map(chip => {
+            return {
+                value: chip.structValue.fields.text.stringValue,
+                link: chip.structValue.fields.link ? chip.structValue.fields.link.stringValue : ""
+            }
+        })
+
+    if (!chips) {
+        cards = response[0].queryResult.fulfillmentMessages[1] &&
+            response[0].queryResult.fulfillmentMessages[1].payload &&
+            response[0].queryResult.fulfillmentMessages[1].payload.fields.richContent.listValue.values[0].listValue.values &&
+            response[0].queryResult.fulfillmentMessages[1].payload.fields.richContent.listValue.values[0].listValue.values.map(card => {
+                const cardValues = card.structValue.fields
+                return {
+                    title: cardValues.title.stringValue,
+                    subtitle: cardValues.subtitle.stringValue,
+                    link: cardValues.actionLink.stringValue,
+                    image: cardValues.image.structValue.fields.src.structValue.fields.rawURL.stringValue
+                }
+            })
+    } else {
+        cards = null
+    }
+    return {
+        chips,
+        cards
+    }
 }
 
 module.exports = {

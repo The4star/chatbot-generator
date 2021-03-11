@@ -77,7 +77,10 @@ const HomePage = ({ global: { plugins }, history: { push } }) => {
                     for dialogflow to choose from.
                   </li>
                   <li>
-                    Add your suggestion chips, these can be a normal chip or a link chip.
+                    Add your cards, you can have one or multiple which will become a carousel.
+                  </li>
+                  <li>
+                    Add your suggestion chips, these can be a normal chip or a link chip. <strong>If you have cards, chips will not be exported.</strong>
                   </li>
                   <li>
                     If your intent is using entities enter them in the utterances like so: {"{Food|Pizza}"}

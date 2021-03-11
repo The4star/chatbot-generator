@@ -46,10 +46,10 @@ const Message = ({ speaker, text, cards, chips, handleQuickReply, cardStyle, qRS
                                     cards.map((card, i) => {
                                         return <Card
                                             key={i}
-                                            header={card.structValue.fields.header.stringValue}
-                                            link={card.structValue.fields.link.stringValue}
-                                            image={card.structValue.fields.image.stringValue}
-                                            description={card.structValue.fields.description.stringValue}
+                                            title={card.title}
+                                            subtitle={card.subtitle}
+                                            link={card.link}
+                                            image={card.image}
                                         />
                                     })
                                 }
