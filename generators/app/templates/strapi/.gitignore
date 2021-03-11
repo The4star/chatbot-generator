@@ -118,3 +118,5 @@ build
 ############################
 
 service_account.json
+tmp/output
+tmp/agent.zip

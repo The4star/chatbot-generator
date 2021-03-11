@@ -8,6 +8,8 @@ class DialogflowFormatter {
     this.formattedIntents = []
     this.formattedEntities = []
     this.botSettings = {}
+    this.host = ""
+    this.schema = ""
   }
 
   createIntent = (intent) => {
@@ -30,8 +32,7 @@ class DialogflowFormatter {
               lang: "en",
               condition: "",
               speech: this.formatResponses(intent.Responses)
-            },
-            (intent.SuggestionChips.length ? this.suggestionChipPayload(intent.SuggestionChips) : {})
+            }
           ],
           speech: []
         }
@@ -45,6 +46,15 @@ class DialogflowFormatter {
       condition: "",
       conditionalFollowupEvents: []
     };
+
+    if (intent.Cards && !intent.Cards.length && intent.SuggestionChips && intent.SuggestionChips.length) {
+      data.responses[0].messages.push(this.suggestionChipPayload(intent.SuggestionChips))
+    }
+
+    if (intent.Cards && intent.Cards.length) {
+      data.responses[0].messages.push(this.formatCardPayload(intent.Cards))
+    }
+
     return data;
   };
 
@@ -118,6 +128,37 @@ class DialogflowFormatter {
       "lang": "en",
       "condition": ""
     }
+  }
+
+  formatCardPayload = (cards) => {
+    return {
+      "type": "4",
+      "title": "",
+      "payload": {
+        "richContent": [
+          this.formatCards(cards)
+        ]
+      },
+      "textToSpeech": "",
+      "lang": "en",
+      "condition": ""
+    }
+  }
+
+  formatCards = (cards) => {
+    return cards.map(card => {
+      return {
+        type: "info",
+        title: card.Title,
+        subtitle: card.SubTitle,
+        image: {
+          src: {
+            rawURL: `${this.schema}${this.host}${card.Image[0].formats.small ? card.Image[0].formats.small.url : card.Image[0].formats.thumbnail.url}`
+          }
+        },
+        actionLink: card.Link
+      }
+    })
   }
 
   createUtterances = (unformattedUtterances) => {

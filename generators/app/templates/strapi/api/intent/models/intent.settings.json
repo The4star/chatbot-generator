@@ -21,7 +21,11 @@
     },
     "Priority": {
       "type": "enumeration",
-      "enum": ["Ignore", "Default", "High"],
+      "enum": [
+        "Ignore",
+        "Default",
+        "High"
+      ],
       "default": "Default"
     },
     "EventName": {
@@ -32,11 +36,22 @@
     },
     "Responses": {
       "type": "dynamiczone",
-      "components": ["bot-response.text-response"]
+      "components": [
+        "bot-response.text-response"
+      ]
     },
     "SuggestionChips": {
       "type": "dynamiczone",
-      "components": ["bot-response.suggestion-chip", "bot-response.link-chip"]
+      "components": [
+        "bot-response.suggestion-chip",
+        "bot-response.link-chip"
+      ]
+    },
+    "Cards": {
+      "type": "dynamiczone",
+      "components": [
+        "bot-response.card"
+      ]
     }
   }
 }
