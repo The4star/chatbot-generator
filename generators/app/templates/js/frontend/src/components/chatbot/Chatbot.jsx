@@ -4,7 +4,7 @@ import Cookies from 'universal-cookie';
 import { v4 as uuid } from 'uuid';
 
 // state
-import { BotStateContext, BotDispatchContext } from '../../state/bot/BotStateProvider'
+import { BotContext } from '../../state/bot/BotStateProvider'
 
 // components
 import WelcomeMessage from './WelcomeMessage/WelcomeMessage';
@@ -56,8 +56,8 @@ const flexInstance = new Flex(false); // change to true to turn on debug message
 const Chatbot = () => {
   let messagesEnd;
   const debug = false;
-  const state = useContext(BotStateContext);
-  const dispatch = useContext(BotDispatchContext);
+  // state
+  const [state, dispatch] = useContext(BotContext);
   const {
     messages,
     showBot,
@@ -310,6 +310,24 @@ const Chatbot = () => {
       return
     }
   }
+
+  useEffect(() => {
+    const chatbotButton = document.querySelector('.chatbot-button')
+    const updateDataLayer = () => {
+      window.dataLayer = window.dataLayer || [];
+      if (showBot === true) {
+        if (window.dataLayer.length) {
+          window.dataLayer.push({ 'event': 'bot_closed' });
+        }
+      } else {
+        window.dataLayer.push({ 'event': 'bot_open' });
+      }
+    }
+    chatbotButton.addEventListener('click', updateDataLayer);
+    return () => {
+      chatbotButton.removeEventListener('click', updateDataLayer);
+    }
+  }, [showBot])
 
   useEffect(() => {
     // show welcome message if it is the user's first visit.

@@ -1,36 +1,20 @@
-import React, { useEffect, useReducer, createContext } from 'react';
+import React, { useReducer, createContext } from 'react';
 
 // reducer
 import { botReducer, botInitialState } from './BotStateReducer';
 
-const BotStateContext = createContext();
-const BotDispatchContext = createContext();
+const BotContext = createContext();
 
 const BotStateProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(botReducer, botInitialState);
-
-  useEffect(() => {
-    window.dataLayer = window.dataLayer || [];
-    if (!state.showBot) {
-      if (window.dataLayer.length) {
-        window.dataLayer.push({ 'event': 'bot_closed' });
-      }
-    } else {
-      window.dataLayer.push({ 'event': 'bot_open' });
-    }
-  }, [state.showBot])
-
+  const reducer = useReducer(botReducer, botInitialState);
   return (
-    <BotDispatchContext.Provider value={dispatch}>
-      <BotStateContext.Provider value={state}>
-        {children}
-      </BotStateContext.Provider>
-    </BotDispatchContext.Provider>
+    <BotContext.Provider value={reducer}>
+      {children}
+    </BotContext.Provider>
   )
 }
 
 export {
-  BotStateContext,
-  BotDispatchContext,
+  BotContext,
   BotStateProvider
 }
