@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "es2017"
+    ],
+    "removeComments": true,
+    "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "target": "es2017",
+    "outDir": "lib"
+  },
+  "typeRoots": [
+    "./node_modules/@types",
+    "./src/types"
+  ],
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules/**/*",
+    ".serverless/**/*",
+    ".webpack/**/*",
+    "_warmup/**/*",
+    ".vscode/**/*"
+  ]
+}

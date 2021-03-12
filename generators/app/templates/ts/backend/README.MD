@@ -1,18 +1,18 @@
-# botty - Backend
-## botty is the best
+# botty-typescript - Backend
+## botty typescript
 
 ## Created By
-|[![Clinton ](link to your image here)]
+|[![clinton ](link to your image here)]
 link to your github here
 |-----------|
-| author: Clinton | 
-| company: Versa | 
+| author: clinton | 
+| company: versa | 
 
-Deployed Site: https://botty.com/
+Deployed Site: https://botty-typescript.com/
 
 ## Purpose 
 
-The Backend of the botty chat bot.
+The Backend of the botty-typescript chat bot.
 
 ## Technologies used
 
@@ -25,4 +25,4 @@ The Backend of the botty chat bot.
 
 ## Functionality and Features
 
-The Backend for the botty chat bot.
+The Backend for the botty-typescript chat bot.

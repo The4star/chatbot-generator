@@ -1,26 +1,27 @@
-const dialogflow = require('dialogflow');
+import { v2, SessionsClient, protos } from '@google-cloud/dialogflow'
+import { IDialogflowQueryResponseChip, IDialogflowQueryResponseCard, IDialogflowQueryResponse } from '../types/Dialogflow.types';
 const structjson = require('structjson');
 
 // keys
-const { googleProjectID, dialogFlowSessionID, dialogFlowSessionLanguageCode, googleClientEmail, googlePrivateKey } = require('./keys')
+import keys from './keys'
+const { googleProjectID, dialogFlowSessionID, dialogFlowSessionLanguageCode, googleClientEmail, googlePrivateKey } = keys;
 
 const credentials = {
     client_email: googleClientEmail,
     private_key: googlePrivateKey
 }
 
-const sessionClient = new dialogflow.SessionsClient({
+const sessionClient: v2.SessionsClient = new SessionsClient({
     projectId: googleProjectID,
     credentials
 });
 
 
 // performs a text query to dialogflow
-const textQuery = async (text, userId, parameters = {}) => {
-    let sessionPath = sessionClient.sessionPath(googleProjectID, dialogFlowSessionID + userId)
-    let self = module.exports;
+const textQuery = async (text: string, userId: string, payload: protos.google.protobuf.IStruct | null = null): Promise<IDialogflowQueryResponse> => {
+    let sessionPath = sessionClient.projectAgentSessionPath(googleProjectID!, dialogFlowSessionID + userId);
 
-    const request = {
+    const request: protos.google.cloud.dialogflow.v2.IDetectIntentRequest = {
         session: sessionPath,
         queryInput: {
             text: {
@@ -31,9 +32,7 @@ const textQuery = async (text, userId, parameters = {}) => {
             },
         },
         queryParams: {
-            payload: {
-                data: parameters
-            }
+            payload
         }
     };
 
@@ -41,10 +40,10 @@ const textQuery = async (text, userId, parameters = {}) => {
     // and messages to be easily ingestible by the front end. 
     let response = await sessionClient.detectIntent(request);
     const { chips, cards } = sortChipsAndCards(response)
-    const state = response[0].queryResult.webhookPayload && response[0].queryResult.webhookPayload.fields.state.stringValue;
+    const state = response[0].queryResult!.webhookPayload && response[0].queryResult!.webhookPayload.fields!.state.stringValue;
     const result = response[0].queryResult
-    const messages = result.fulfillmentMessages[0].text.text;
-    const intentResponse = messages.map(message => message).join("\n\n");
+    const messages = result!.fulfillmentMessages![0].text!.text;
+    const intentResponse = messages!.map((message: string) => message).join("\n\n");
     // Set function response status
     let status;
     if (state === "Exit") {
@@ -58,13 +57,12 @@ const textQuery = async (text, userId, parameters = {}) => {
         intentResponse,
         chips: chips ? chips : null,
         cards: cards ? cards : null
-    };
+    } as IDialogflowQueryResponse;
 }
 
 // performs an event query to dialogflow
-const eventQuery = async (event, userId, parameters = {}) => {
-    let sessionPath = sessionClient.sessionPath(googleProjectID, dialogFlowSessionID + userId)
-    let self = module.exports;
+const eventQuery = async (event: string, userId: string, parameters = {}): Promise<IDialogflowQueryResponse> => {
+    let sessionPath = sessionClient.projectAgentSessionPath(googleProjectID!, dialogFlowSessionID + userId)
 
     const request = {
         session: sessionPath,
@@ -83,10 +81,10 @@ const eventQuery = async (event, userId, parameters = {}) => {
     // and messages to be easily ingestible by the front end. 
     let response = await sessionClient.detectIntent(request);
     const { chips, cards } = sortChipsAndCards(response)
-    const state = response[0].queryResult.webhookPayload && response[0].queryResult.webhookPayload.fields.state.stringValue;
+    const state = response[0].queryResult!.webhookPayload && response[0].queryResult!.webhookPayload.fields!.state.stringValue;
     const result = response[0].queryResult
-    const messages = result.fulfillmentMessages[0].text.text;
-    const intentResponse = messages.map(message => message).join("\n\n");
+    const messages = result!.fulfillmentMessages![0].text!.text;
+    const intentResponse = messages!.map((message: string) => message).join("\n\n");
     // Set function response status
     let status;
     if (state === "Exit") {
@@ -100,15 +98,15 @@ const eventQuery = async (event, userId, parameters = {}) => {
         intentResponse,
         chips: chips ? chips : null,
         cards: cards ? cards : null
-    };
+    } as IDialogflowQueryResponse;
 }
 
-const sortChipsAndCards = (response) => {
+const sortChipsAndCards = (response: any): { chips: IDialogflowQueryResponseChip[], cards: IDialogflowQueryResponseCard[] } => {
     let cards
     const chips = response[0].queryResult.fulfillmentMessages[1] &&
         response[0].queryResult.fulfillmentMessages[1].payload &&
         response[0].queryResult.fulfillmentMessages[1].payload.fields.richContent.listValue.values[0].listValue.values[0].structValue.fields.options &&
-        response[0].queryResult.fulfillmentMessages[1].payload.fields.richContent.listValue.values[0].listValue.values[0].structValue.fields.options.listValue.values.map(chip => {
+        response[0].queryResult.fulfillmentMessages[1].payload.fields.richContent.listValue.values[0].listValue.values[0].structValue.fields.options.listValue.values.map((chip: any) => {
             return {
                 value: chip.structValue.fields.text.stringValue,
                 link: chip.structValue.fields.link ? chip.structValue.fields.link.stringValue : ""
@@ -119,7 +117,7 @@ const sortChipsAndCards = (response) => {
         cards = response[0].queryResult.fulfillmentMessages[1] &&
             response[0].queryResult.fulfillmentMessages[1].payload &&
             response[0].queryResult.fulfillmentMessages[1].payload.fields.richContent.listValue.values[0].listValue.values &&
-            response[0].queryResult.fulfillmentMessages[1].payload.fields.richContent.listValue.values[0].listValue.values.map(card => {
+            response[0].queryResult.fulfillmentMessages[1].payload.fields.richContent.listValue.values[0].listValue.values.map((card: any) => {
                 const cardValues = card.structValue.fields
                 return {
                     title: cardValues.title.stringValue,
@@ -137,7 +135,7 @@ const sortChipsAndCards = (response) => {
     }
 }
 
-module.exports = {
+export {
     textQuery,
     eventQuery
 }

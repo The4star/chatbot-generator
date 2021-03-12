@@ -1,8 +1,4 @@
-require('dotenv').config()
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_AUTH_TOKEN;
-
-const generateToken = async (userId) => {
+const generateToken = async (userId: string | number) => {
   const AccessToken = require('twilio').jwt.AccessToken;
   const ChatGrant = AccessToken.ChatGrant;
 
@@ -30,7 +26,7 @@ const generateToken = async (userId) => {
 
   token.identity = identity;
 
-  if(process.env.DEBUG) console.log("token", token);
+  if (process.env.DEBUG) console.log("token", token);
   const jwt = token.toJwt();
 
   // Serialize the token to a JWT string
@@ -40,6 +36,6 @@ const generateToken = async (userId) => {
 // // generateToken();
 // sendMessage();
 
-module.exports = {
-    generateToken
+export {
+  generateToken
 }
