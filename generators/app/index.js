@@ -392,7 +392,7 @@ module.exports = class extends Generator {
 
         this.fs.copyTpl(
           this.templatePath("pipelines/aws/frontend-serverless.yml"),
-          this.destinationPath(`frontend / serverless.yml`),
+          this.destinationPath(`frontend/serverless.yml`),
           {
             chatbotName: chatbotNameNoSpaces,
             chatbotDescription,
