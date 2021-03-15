@@ -2,46 +2,46 @@ service: <%= chatbotName %>-chat-bot
 
 provider:
   name: aws
-  runtime: nodejs10.x
+  runtime: nodejs12.x
   stage: ${opt:stage, staging}
   region: ap-southeast-2
 
-plugins: 
+plugins:
   - serverless-s3-sync
 
 custom:
   bucketName: <%= chatbotName %>-chat-bot-frontend-${opt:stage}
-  s3Sync: 
+  s3Sync:
     - bucketName: ${self:custom.bucketName}
       localDir: build/
 
 resources:
-  Resources: 
-    HostingBucket: 
+  Resources:
+    HostingBucket:
       Type: AWS::S3::Bucket
-      Properties: 
+      Properties:
         BucketName: ${self:custom.bucketName}
         AccessControl: PublicRead
-        WebsiteConfiguration: 
+        WebsiteConfiguration:
           IndexDocument: index.html
           ErrorDocument: index.html
-    S3AccessPolicy: 
+    S3AccessPolicy:
       Type: AWS::S3::BucketPolicy
       Properties:
-        Bucket: 
+        Bucket:
           Ref: HostingBucket
-        PolicyDocument: 
-          Statement: 
+        PolicyDocument:
+          Statement:
             - Sid: PublicReadGetObject
               Effect: Allow
-              Principal: '*'
+              Principal: "*"
               Action:
                 - s3:GetObject
               Resource: arn:aws:s3:::${self:custom.bucketName}/*
-    CloudFrontDistribution: 
+    CloudFrontDistribution:
       Type: AWS::CloudFront::Distribution
       Properties:
-        DistributionConfig: 
+        DistributionConfig:
           Origins:
             - DomainName: ${self:custom.bucketName}.s3.amazonaws.com
               Id: <%= chatbotName %>ChatBotFrontend
@@ -49,9 +49,9 @@ resources:
                 HTTPPort: 80
                 HTTPSPort: 443
                 OriginProtocolPolicy: https-only
-          Enabled: 'true'
+          Enabled: "true"
           DefaultRootObject: index.html
-          CustomErrorResponses: 
+          CustomErrorResponses:
             - ErrorCode: 404
               ResponseCode: 200
               ResponsePagePath: /index.html
@@ -66,9 +66,9 @@ resources:
               - PUT
             TargetOriginId: <%= chatbotName %>ChatBotFrontend
             ForwardedValues:
-              QueryString: 'false'
+              QueryString: "false"
               Cookies:
-                  Forward: none
+                Forward: none
             ViewerProtocolPolicy: redirect-to-https
           ViewerCertificate:
             CloudFrontDefaultCertificate: true

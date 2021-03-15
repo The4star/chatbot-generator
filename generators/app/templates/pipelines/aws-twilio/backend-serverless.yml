@@ -5,9 +5,14 @@ package:
     - test
     - config/dev.js
 
+useDotenv: true
+plugins:
+  - serverless-offline
+  - serverless-plugin-typescript-express
+
 provider:
   name: aws
-  runtime: nodejs10.x
+  runtime: nodejs12.x
   stage: ${opt:stage}
   region: ap-southeast-2
   environment:
@@ -24,9 +29,10 @@ provider:
     TWILIO_API_KEY: ${env:TWILIO_API_KEY}
     TWILIO_API_SECRET: ${env:TWILIO_API_SECRET}
     TWILIO_SERVICE_SID: ${env:TWILIO_SERVICE_SID}
+
 functions:
   app:
-    handler: app.handler
+    handler: src/app.handler
     events:
       - http:
           path: /

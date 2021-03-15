@@ -1,9 +1,10 @@
 {
-  "name": "<%=chatbotName%>-backend",
+  "name": "botty-backend",
   "version": "1.0.0",
-  "description": "<%=chatbotDescription%>",
+  "description": "botty is the best",
   "main": "app.js",
   "scripts": {
+    "serverlessDev": "serverless offline start --httpPort 5000 --stage dev",
     "dev": "nodemon app.js",
     "start": "node app.js",
     "test": "jest --watchAll"
@@ -18,6 +19,7 @@
     "express": "^4.17.1",
     "morgan": "^1.9.1",
     "serverless-http": "^2.5.0",
+    "serverless-offline": "^6.8.0",
     "structjson": "^1.0.1",
     "twilio": "^3.43.0",
     "uuid": "^8.1.0"

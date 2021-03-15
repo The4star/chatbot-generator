@@ -5,9 +5,12 @@ package:
     - test
     - config/dev.js
 
+plugins:
+  - serverless-offline
+
 provider:
   name: aws
-  runtime: nodejs10.x
+  runtime: nodejs12.x
   stage: ${opt:stage}
   region: ap-southeast-2
   environment:
@@ -17,7 +20,7 @@ provider:
     GOOGLE_PRIVATE_KEY: ${env:GOOGLE_PRIVATE_KEY}
     DIALOGFLOW_SESSION_ID: ${env:DIALOGFLOW_SESSION_ID}
     DIALOGFLOW_SESSION_LANGUAGE_CODE: ${env:DIALOGFLOW_SESSION_LANGUAGE_CODE}
-    
+
 functions:
   app:
     handler: app.handler

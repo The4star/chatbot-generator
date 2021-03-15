@@ -1,0 +1,24 @@
+.menu {
+  z-index: 1;
+  padding: 5px;
+  position: fixed;
+  right:65px;
+  bottom: 78%;
+  width: 200px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 2px 2px 4px grey;
+  animation: menu-appear .7s ease;
+}
+
+@media only screen and (max-width: 600px) {
+   .menu {
+    bottom: 83%;
+    right: 40px;
+  }
+}
+
+@keyframes menu-appear {
+  0%   { opacity: .1;}
+  100% { opacity: 1; }
+}

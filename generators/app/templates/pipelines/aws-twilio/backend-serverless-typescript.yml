@@ -1,0 +1,43 @@
+service: <%= chatbotName %>-backend
+package:
+  exclude:
+    - .env
+    - test
+    - config/dev.js
+
+useDotenv: true
+plugins:
+  - serverless-offline
+  - serverless-plugin-typescript-express
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${opt:stage}
+  region: ap-southeast-2
+  environment:
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+    GOOGLE_CLIENT_EMAIL: ${env:GOOGLE_CLIENT_EMAIL}
+    GOOGLE_PROJECT_ID: ${env:GOOGLE_PROJECT_ID}
+    GOOGLE_PRIVATE_KEY: ${env:GOOGLE_PRIVATE_KEY}
+    DIALOGFLOW_SESSION_ID: ${env:DIALOGFLOW_SESSION_ID}
+    DIALOGFLOW_SESSION_LANGUAGE_CODE: ${env:DIALOGFLOW_SESSION_LANGUAGE_CODE}
+    TWILIO_ACCOUNT_SID: ${env:TWILIO_ACCOUNT_SID}
+    TWILIO_FLEX_FLOW_SID: ${env:TWILIO_FLEX_FLOW_SID}
+    TWILIO_FLEX_CHAT_SERVICE: ${env:TWILIO_FLEX_CHAT_SERVICE}
+    TWILIO_AUTH_TOKEN: ${env:TWILIO_AUTH_TOKEN}
+    TWILIO_API_KEY: ${env:TWILIO_API_KEY}
+    TWILIO_API_SECRET: ${env:TWILIO_API_SECRET}
+    TWILIO_SERVICE_SID: ${env:TWILIO_SERVICE_SID}
+functions:
+  app:
+    handler: src/app.handler
+    events:
+      - http:
+          path: /
+          method: ANY
+          cors: true
+      - http:
+          path: /{proxy+}
+          method: ANY
+          cors: true
