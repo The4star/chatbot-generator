@@ -19,7 +19,7 @@ const botReducer: Reducer<IBotState, IBotAction> = (state = botInitialState, act
       return { ...state, showMenu: !state.showMenu };
     }
     case "toggleWelcomeMessage": {
-      return { ...state, showWelcome: !state.showWelcomeMessage };
+      return { ...state, showWelcomeMessage: !state.showWelcomeMessage };
     }
     case "setHumanHandover": {
       return { ...state, humanHandover: action.humanHandover };
