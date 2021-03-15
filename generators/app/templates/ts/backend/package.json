@@ -1,7 +1,7 @@
 {
-  "name": "botty-backend",
+  "name": "<%=chatbotName%>-frontend",
+  "description": "<%=chatbotDescription%>",
   "version": "1.0.0",
-  "description": "botty is the best",
   "main": "app.js",
   "scripts": {
     "serverlessDev": "serverless offline start --httpPort 5000 --stage dev",
