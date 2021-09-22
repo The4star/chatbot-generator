@@ -4,18 +4,17 @@ import ReactMarkdown from 'react-markdown';
 // icons
 import { closeIcon } from '../../../img/img-variables';
 
-const WelcomeMessage = ({ welcomeMessage, closeWelcomeMessage }) => {
-
+const Notification = ({ message, closeNotification }) => {
   return (
     <div className="welcome-message-wrapper">
       <div className="text-area">
-        <ReactMarkdown source={welcomeMessage} />
+        <ReactMarkdown source={message} />
       </div>
-      <div className="close-button" onClick={closeWelcomeMessage}>
+      <div className="close-button" onClick={closeNotification}>
         {closeIcon}
       </div>
     </div>
   )
 }
 
-export default WelcomeMessage;
+export default Notification;

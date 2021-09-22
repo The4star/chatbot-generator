@@ -3,7 +3,7 @@ export interface IBotState {
   showBot: boolean;
   showDots: boolean;
   showMenu: boolean;
-  showWelcomeMessage: boolean;
+  notification: string | null;
   humanHandover: boolean;
   showRestartMessage: boolean;
   disableInput: boolean;
@@ -32,56 +32,3 @@ export interface IDialogflowQueryResponseCard {
   link: string;
   image: string;
 }
-
-interface IMessageAction {
-  type: "updateMessages";
-  messages: IBotStateMessages[];
-}
-
-interface IShowBotAction {
-  type: "toggleBot";
-}
-
-interface IShowDotsAction {
-  type: "showDots";
-  showDots: boolean
-}
-
-interface IShowMenuAction {
-  type: "toggleMenu";
-}
-
-interface IShowWelcomeMessageAction {
-  type: "toggleWelcomeMessage";
-}
-
-interface IHumanHandoverAction {
-  type: "setHumanHandover";
-  humanHandover: boolean;
-}
-
-interface IShowRestartMessageAction {
-  type: "setShowRestartMessage";
-  showRestartMessage: boolean;
-}
-
-interface IDisableInputAction {
-  type: "setDisableInput";
-  disableInput: boolean;
-}
-
-interface IFirstInteractionAction {
-  type: "setFirstInteraction";
-  firstInteraction: boolean;
-}
-
-export type IBotAction =
-  | IMessageAction
-  | IShowBotAction
-  | IShowDotsAction
-  | IShowMenuAction
-  | IShowWelcomeMessageAction
-  | IHumanHandoverAction
-  | IShowRestartMessageAction
-  | IDisableInputAction
-  | IFirstInteractionAction

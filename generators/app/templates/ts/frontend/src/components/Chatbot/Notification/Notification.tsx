@@ -5,21 +5,21 @@ import ReactMarkdown from 'react-markdown';
 import CloseIcon from '../../../img/CloseIcon';
 
 interface WelcomeMessageProps {
-  welcomeMessage: string;
-  closeWelcomeMessage: () => void;
+  message: string;
+  closeNotification: () => void;
 }
-const WelcomeMessage = ({ welcomeMessage, closeWelcomeMessage }: WelcomeMessageProps) => {
+const Notification = ({ message, closeNotification }: WelcomeMessageProps) => {
 
   return (
     <div className="welcome-message-wrapper">
       <div className="text-area">
-        <ReactMarkdown source={welcomeMessage} />
+        <ReactMarkdown source={message} />
       </div>
-      <div className="close-button" onClick={closeWelcomeMessage}>
+      <div className="close-button" onClick={closeNotification}>
         <CloseIcon />
       </div>
     </div>
   )
 }
 
-export default WelcomeMessage;
+export default Notification;
