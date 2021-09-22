@@ -1,12 +1,12 @@
 {
-  "name": "generator-versa-chatbot-generator",
+  "name": "generator-chatbot-generator",
   "version": "0.0.0",
   "description": "Generates the frontend User interface and backend connection to Dialogflow and Twilio Flex for Live person handover if chosen. Gives the user choice of which platform to deploy onto. ",
   "homepage": "",
   "author": {
     "name": "Clinton Forster",
-    "email": "clinton.forster@versa.agency",
-    "url": "https://the-4star-045711.netlify.app/"
+    "email": "clintonforster@gmail.com",
+    "url": "https://www.clintonforster.com"
   },
   "files": [
     "generators"
@@ -69,6 +69,6 @@
     "pretest": "eslint .",
     "test": "jest"
   },
-  "repository": "the4star/generator-versa-chatbot-generator",
+  "repository": "the4star/generator-chatbot-generator",
   "license": "MIT"
 }

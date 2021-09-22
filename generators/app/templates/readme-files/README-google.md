@@ -21,7 +21,7 @@ you will also need a .env file with the following, **if you have access to the g
 GOOGLE_CLIENT_EMAIL= {email from your dialogflow integrations service account}
 GOOGLE_PRIVATE_KEY= {private key from your dialogflow integrations service account}
 GOOGLE_PROJECT_ID= {project id from your dialogflow integrations service account}
-DIALOGFLOW_SESSION_ID=versa
+DIALOGFLOW_SESSION_ID=chatbot
 DIALOGFLOW_SESSION_LANGUAGE_CODE=en
 ```
 

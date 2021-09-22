@@ -12,8 +12,8 @@ const ErrorMessage = () => {
                 <p>!</p>
             </div>
             <div className="message-field">
-                <h3>Versa chat failed to respond</h3>
-                <p>Please try <span onClick={() => restartChat()}>reloading the window</span> or alternatively <a href="https://versa.agency/contact" target="_blank" rel="noopener noreferrer">contact us here</a>. </p>
+                <h3><%=chatbotName%> failed to respond</h3>
+                <p>Please try <span onClick={() => restartChat()}>reloading the window</span> or alternatively <a href="https://www.clintonforster.com" target="_blank" rel="noopener noreferrer">contact us here</a>. </p>
             </div>
         </div>
     )

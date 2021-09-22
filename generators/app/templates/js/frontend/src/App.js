@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import Chatbot from './components/Chatbot/Chatbot';
+import Chatbot from './components/chatbot/Chatbot';
 
 import './styles/index.scss';
 

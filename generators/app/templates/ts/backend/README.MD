@@ -2,11 +2,11 @@
 ## botty typescript
 
 ## Created By
-|[![clinton ](link to your image here)]
+|[![<%=authorName%>](link to your image here)]
 link to your github here
 |-----------|
-| author: clinton | 
-| company: versa | 
+| author: <%=authorName%> | 
+| company: <%=companyName%> | 
 
 Deployed Site: https://botty-typescript.com/
 

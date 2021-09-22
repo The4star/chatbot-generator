@@ -1,6 +1,6 @@
 # Strapi To Dialogflow for <%=chatbotName%>
 
-An interaction model between Strapi CMS and dialogflow using postgres as the database. This is setup to work with Dialogflow messenger and Versa's Chatbot Generator. To work with another platform or add custom functionality, the models will need to be changed and the bot export code modified. 
+An interaction model between Strapi CMS and dialogflow using postgres as the database. This is setup to work with Dialogflow messenger and the Chatbot Generator. To work with another platform or add custom functionality, the models will need to be changed and the bot export code modified. 
 
 ## Getting started
 

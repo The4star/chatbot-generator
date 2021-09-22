@@ -13,4 +13,4 @@ ReactDOM.render(
     <Provider store={mainStore}>
         <App />
     </Provider>
-    , document.getElementById('versa-chat-bot-ui'));
+    , document.getElementById('chat-bot-ui'));

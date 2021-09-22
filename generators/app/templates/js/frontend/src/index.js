@@ -14,7 +14,7 @@ ReactDOM.render(
     <Provider store={mainStore}>
         <App />
     </Provider>
-    , document.getElementById('versa-chat-bot-ui'));
+    , document.getElementById('chat-bot-ui'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

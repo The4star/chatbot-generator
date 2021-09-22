@@ -6,7 +6,7 @@ const chalk = require("chalk");
 module.exports = class extends Generator {
   async prompting() {
     // Have Yeoman greet the user.
-    this.log(`\nWelcome to the ${chalk.blue("Versa chat bot")} generator! \n`);
+    this.log(`\nWelcome to the ${chalk.blue("Chatbot")} generator! \n`);
 
     this.answers = await this.prompt([
       {

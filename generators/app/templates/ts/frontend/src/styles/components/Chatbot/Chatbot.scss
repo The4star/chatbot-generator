@@ -4,7 +4,7 @@
   }
 }
 
-#versa-chat-bot-ui {
+#chat-bot-ui {
   .chatbot-button {
     display: flex;
     align-items: center;
@@ -284,7 +284,7 @@
 }
 
 @media only screen and (max-width: 850px) {
-  #versa-chat-bot-ui {
+  #chat-bot-ui {
     .chatbot {
       height: 100%;
       width: 100%;
