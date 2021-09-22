@@ -1,7 +1,7 @@
 import React from 'react';
 
 const restartChat = () => {
-    window.location.reload(false);
+    window.location.reload();
 }
 
 const ErrorMessage = ({ message }) => {

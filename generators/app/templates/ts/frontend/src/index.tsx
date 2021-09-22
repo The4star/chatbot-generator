@@ -4,12 +4,13 @@ import 'react-app-polyfill/stable';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import mainStore from './state/store';
 import App from './App';
 
-import { BotStateProvider } from './state/bot/BotStateProvider'
 
 ReactDOM.render(
-    <BotStateProvider>
+    <Provider store={mainStore}>
         <App />
-    </BotStateProvider>
+    </Provider>
     , document.getElementById('versa-chat-bot-ui'));

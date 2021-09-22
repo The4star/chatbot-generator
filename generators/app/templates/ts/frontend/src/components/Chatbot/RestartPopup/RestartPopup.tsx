@@ -1,7 +1,7 @@
 import React from 'react';
 
 const restartChat = () => {
-    window.location.reload(false);
+    window.location.reload();
 }
 
 const RestartPopup = () => {
@@ -11,13 +11,13 @@ const RestartPopup = () => {
                 <div className="message-box">
                     <h3>
                         Thanks for chatting with us
-                </h3>
+                    </h3>
                     <p>
                         If you have any more questions
-                </p>
+                    </p>
                     <p>
                         please reach out to us again
-                </p>
+                    </p>
                 </div>
                 <p className="restart-button" onClick={() => restartChat()}>Start a new chat</p>
             </div>

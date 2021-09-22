@@ -1,13 +1,22 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 import { v4 as uuid } from 'uuid';
-
-// state
-import { BotContext } from '../../state/bot/BotStateProvider'
+import {
+  setDisableInput,
+  setFirstInteraction,
+  setHumanHandover,
+  setNotification,
+  setShowDots,
+  setShowRestartMessage,
+  toggleBot,
+  toggleMenu,
+  updateMessages
+} from '../../state/bot/bot.state'
 
 // components
-import WelcomeMessage from './WelcomeMessage/WelcomeMessage';
+import Notification from './Notification/Notification';
 import RestartPopup from './RestartPopup/RestartPopup';
 import Message from './Message/Message';
 import InfoPopup from './InfoPopup/InfoPopup';
@@ -38,7 +47,6 @@ import {
   defaultChips
 } from '../../helpers/variables'
 
-// svg
 import {
   // paperclip, 
   sendButton,
@@ -56,19 +64,18 @@ const flexInstance = new Flex(false); // change to true to turn on debug message
 const Chatbot = () => {
   let messagesEnd;
   const debug = false;
+
   // state
-  const [state, dispatch] = useContext(BotContext);
-  const {
-    messages,
-    showBot,
-    showDots,
-    showMenu,
-    showWelcomeMessage,
-    humanHandover,
-    showRestartMessage,
-    disableInput,
-    firstInteraction
-  } = state
+  const dispatch = useDispatch()
+  const messages = useSelector(state => state.bot.messages);
+  const showBot = useSelector(state => state.bot.showBot);
+  const showDots = useSelector(state => state.bot.showDots);
+  const notification = useSelector(state => state.bot.notification);
+  const humanHandover = useSelector(state => state.bot.humanHandover);
+  const disableInput = useSelector(state => state.bot.disableInput);
+  const firstInteraction = useSelector(state => state.bot.firstInteraction);
+  const showRestartMessage = useSelector(state => state.bot.showRestartMessage);
+  const showMenu = useSelector(state => state.bot.showMenu)
 
   const _log = (debugOutput) => {
     if (debug) {
@@ -81,7 +88,7 @@ const Chatbot = () => {
   const initiateFlex = async () => {
     _log("initiateFlex: ")
     const userId = cookies.get('userId');
-    _log("userId", userId);
+    _log("userId:" + userId);
     await flexInstance.initiate(userId, messages, (receivedMessage) => {  // Message added Handler
       _log(receivedMessage);
       if (receivedMessage.type === "text" && receivedMessage.author !== userId) {
@@ -89,24 +96,24 @@ const Chatbot = () => {
           speaker: formatName(receivedMessage.author),
           msg: receivedMessage.body
         }
-        dispatch({ type: "updateMessages", messages: [message] })
+        dispatch(updateMessages([message]))
       }
     }, (agentLeftPayload) => { // agent left handler
-      dispatch({ type: "setShowRestartMessage", showRestartMessage: true })
+      dispatch(setShowRestartMessage(true))
     }, (agentJoinedPayload) => { // agent joined handler\
       const agentName = formatName(agentJoinedPayload.identity);
       let message = {
         info: agentName + " has joined the conversation."
       }
-      dispatch({ type: "updateMessages", messages: [message] })
+      dispatch(updateMessages([message]))
     }, (typingPayload) => { // typing dots from agent handler\
-      dispatch({ type: "showDots", showDots: true })
+      dispatch(setShowDots(true))
     }, (typingEndedPayload) => { // typing ended from agent handler\
-      dispatch({ type: "showDots", showDots: false })
+      dispatch(setShowDots(false))
     });
     _log("Token: " + flexInstance.token);
-    _log("Client: ", flexInstance.client);
-    _log("Channel: ", flexInstance.channel);
+    _log("Client: " + flexInstance.client);
+    _log("Channel: " + flexInstance.channel);
   }
 
   const sendFlexMessage = async (messagetoSend) => {
@@ -115,7 +122,7 @@ const Chatbot = () => {
         speaker: 'user',
         msg: messagetoSend
       }
-      dispatch({ type: "updateMessages", messages: [message] })
+      dispatch(updateMessages([message]))
       await flexInstance.sendMessage(messagetoSend);
     } catch (error) {
       console.error(error)
@@ -134,7 +141,7 @@ const Chatbot = () => {
     // add card message
     if (cards) {
       let message = {
-        speaker: '<%=chatbotName%> Bot',
+        speaker: '<%=chatbotName%>  Bot',
         cards: cards
       }
       allMessages.push(message)
@@ -142,7 +149,7 @@ const Chatbot = () => {
     // add quick reply message
     if (chips) {
       let message = {
-        speaker: '<%=chatbotName%> Bot',
+        speaker: '<%=chatbotName%>  Bot',
         chips: chips
       }
       allMessages.push(message)
@@ -159,7 +166,7 @@ const Chatbot = () => {
         msg: text
       }
 
-      dispatch({ type: "updateMessages", messages: [message] })
+      dispatch(updateMessages([message]))
 
       const res = await axios.post(`${apiURL}/dialogflow/text_query`, { text, userId: cookies.get('userId') })
       const allMessages = []
@@ -169,7 +176,7 @@ const Chatbot = () => {
       const cards = res.data.cards;
 
       formatMessages({ botMessage, chips, cards }, allMessages);
-      dispatch({ type: "updateMessages", messages: allMessages })
+      dispatch(updateMessages(allMessages))
 
       // if the user has asked to talk to a human
       // check if they have already talked to a human
@@ -191,9 +198,9 @@ const Chatbot = () => {
           let handoverMessage = {
             info: "You are now being put in touch with a live agent. This can take up to 5 minutes, in the meantime please add as much information in the chat as you would like."
           }
-          dispatch({ type: "updateMessages", messages: [handoverMessage] })
-          dispatch({ type: "setHumanHandover", humanHandover: true })
-          dispatch({ type: "showDots", showDots: false })
+          dispatch(updateMessages([handoverMessage]))
+          dispatch(setHumanHandover(true))
+          dispatch(setShowDots(false))
           userInput.disabled = false
           userInput.focus()
           flexInstance.sendConnectedMessage(userId, "User is now connected");
@@ -203,12 +210,12 @@ const Chatbot = () => {
             info: "Please restart the chat to continue your conversation with <%=chatbotName%> Bot.",
             restart: true
           }
-          dispatch({ type: "updateMessages", messages: [reloadMessage] })
-          dispatch({ type: "showDots", showDots: false })
-          dispatch({ type: "setDisableInput", disableInput: true })
+          dispatch(updateMessages([reloadMessage]))
+          dispatch(setShowDots(false))
+          dispatch(setDisableInput(true))
         }
       } else {
-        dispatch({ type: "showDots", showDots: false })
+        dispatch(setShowDots(false))
       }
       // if this it the user's first message
       // push a datalayer of bot_used to log
@@ -216,15 +223,15 @@ const Chatbot = () => {
       if (firstInteraction === true) {
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({ 'event': 'bot_used' });
-        dispatch({ type: "setFirstInteraction", firstInteraction: true });
+        dispatch(setFirstInteraction(true))
       }
     } catch (error) {
       let message = {
         error: true
       }
 
-      dispatch({ type: "updateMessages", messages: [message] })
-      dispatch({ type: "showDots", showDots: false })
+      dispatch(updateMessages([message]))
+      dispatch(setShowDots(false))
       console.error(error)
     }
 
@@ -241,17 +248,17 @@ const Chatbot = () => {
       const chips = res.data.chips;
       const cards = res.data.cards;
 
-      dispatch({ type: "showDots", showDots: true })
+      dispatch(setShowDots(true))
 
       formatMessages({ botMessage, chips, cards }, allMessages);
-      dispatch({ type: "updateMessages", messages: allMessages })
-      dispatch({ type: "showDots", showDots: false })
+      dispatch(updateMessages(allMessages))
+      dispatch(setShowDots(false))
     } catch (error) {
       let message = {
         error: true
       }
-      dispatch({ type: "updateMessages", messages: [message] })
-      dispatch({ type: "showDots", showDots: false })
+      dispatch(updateMessages([message]))
+      dispatch(setShowDots(false))
       console.error(error)
     }
   }
@@ -266,7 +273,7 @@ const Chatbot = () => {
         } else if (message.cards) {
           return <Message key={i} speaker={message.speaker} cards={message.cards} cardStyle />
         } else if (message.info) {
-          return message.restart ? <InfoPopup key={i} message={message.info} restart /> : <InfoPopup key={i} message={message.info} />
+          return <InfoPopup key={i} message={message.info} />
         } else if (message.error) {
           return <ErrorMessage />
         } else if (message.script) {
@@ -281,29 +288,31 @@ const Chatbot = () => {
   }
 
   // handle when someone clicks a quick reply(chip)
-  const handleQuickReply = (text, payload) => {
-    dispatch({ type: "showDots", showDots: true })
+  const handleQuickReply = (payload) => {
+    dispatch(setShowDots(true))
     textQuery(payload);
-    document.querySelector('.input-form__user-input').focus()
+    const userInput = document.querySelector('.input-form__user-input');
+    userInput.focus()
   }
 
   const restartChat = () => {
-    window.location.reload(false);
+    window.location.reload();
   }
 
   // handle when a user presses send or enter. 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    let submission = e.target.children[0]
-    if (submission.value !== '') {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    let submission = event.currentTarget.children[0];
+    const query = submission.value;
+    if (query !== '') {
       if (humanHandover === false) {
-        dispatch({ type: "showDots", showDots: true })
-        textQuery(submission.value)
+        dispatch(setShowDots(true))
         submission.value = ''
+        await textQuery(query)
         submission.focus()
       } else {
-        sendFlexMessage(submission.value)
         submission.value = ''
+        await sendFlexMessage(query)
         submission.focus()
       }
     } else {
@@ -334,7 +343,7 @@ const Chatbot = () => {
     if (cookies.get('userId') === undefined) {
       cookies.set('userId', uuid(), { path: '/' })
       setTimeout(() => {
-        dispatch({ type: "toggleWelcomeMessage" })
+        dispatch(setNotification(customWelcomeMessage))
       }, 3000)
     }
     const getWelcome = async () => {
@@ -351,7 +360,7 @@ const Chatbot = () => {
        * scroll to the bottom of the message window on
        * every new message
        */
-      messagesEnd.scrollIntoView({ behaviour: 'smooth' })
+      messagesEnd.scrollIntoView({ behavior: 'smooth' })
     }
   })
 
@@ -359,12 +368,12 @@ const Chatbot = () => {
     return (
       <>
         {
-          customWelcomeMessage && showWelcomeMessage ?
-            <WelcomeMessage welcomeMessage={customWelcomeMessage} closeWelcomeMessage={dispatch({ type: "toggleWelcomeMessage" })} />
+          notification ?
+            <Notification message={notification} closeNotification={() => dispatch(setNotification(null))} />
             :
             null
         }
-        <div className="chatbot-button chatbot-button-hidden" onClick={() => dispatch({ type: "toggleBot" })} >
+        <div className="chatbot-button chatbot-button-hidden" onClick={() => dispatch(toggleBot())} >
           {chatbotButton}
           <div ref={(el) => messagesEnd = el}></div>
         </div>
@@ -373,7 +382,7 @@ const Chatbot = () => {
   } else {
     return (
       <>
-        <div className="chatbot-button" onClick={() => dispatch({ type: "toggleBot" })} >{closeIcon}</div>
+        <div className="chatbot-button" onClick={() => dispatch(toggleBot())} >{closeIcon}</div>
         <div className="chatbot">
           {
             showRestartMessage ?
@@ -383,14 +392,14 @@ const Chatbot = () => {
           }
           <div className="chatbot__main-title">
             <div className="logo-section">
-              <div className="logo-section__logo" alt="logo" />
+              <div className="logo-section__logo" />
               <div className="title-text">
                 <h4>
                   <%=chatbotName%>
-                          </h4>
+                </h4>
                 <p>
                   Virtual Assistant
-                          </p>
+                </p>
               </div>
             </div>
 
@@ -399,10 +408,10 @@ const Chatbot = () => {
                 isDeployedSite() ?
                   <p className="header-button" onClick={() => getInjectionScript()}>
                     Injection Script
-                            </p> : null
+                  </p> : null
               }
-              <div className="header-button" alt="download" onClick={() => dispatch({ type: "toggleMenu" })}>{menuButton}</div>
-              <div className="header-button" onClick={() => dispatch({ type: "toggleBot" })}>{closeIcon}</div>
+              <div className="header-button" onClick={() => dispatch(toggleMenu())}>{menuButton}</div>
+              <div className="header-button" onClick={() => dispatch(toggleBot())}>{closeIcon}</div>
               {/* <img className="header-button" src={`${deployedURL}/img/download.png`} alt="download" onClick={this.downloadConversation}/> */}
             </div>
           </div>
@@ -443,7 +452,7 @@ const Chatbot = () => {
               null :
               <form className="input-form" onSubmit={handleSubmit}>
                 <input type="text" onChange={(e) => changeButtonStyles(e)} placeholder="Send a message..." className="input-form__user-input" />
-                {/* <button className="input-buttons" onClick={handleUpload} type="button">{paperclip}</button> */}
+                {/* <button className="input-buttons" onClick={handleUpload} type="button"><PaperClip /></button> */}
                 <button type="submit" className="input-form__submit">{sendButton}</button>
               </form>
           }
